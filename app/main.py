@@ -1,15 +1,14 @@
 import socket  # noqa: F401
 
 
-def createMessage(data):    
-
-    corelationId_Bytes = int.from_bytes(data[8:12], byteorder = "big")
+def createMessage(response):
+    corelationId_Bytes = response[8:12]
     
-    return len(corelationId_Bytes).to_bytes(4, byteorder="big") + corelationId_Bytes
+    return bytes(4) + corelationId_Bytes
 
 def handleClient(client):
-    data = client.recv(1024)
-    client.sendall(createMessage(data))
+    response = client.recv(2048)
+    client.sendall(createMessage(response))
     client.close()
     
 
