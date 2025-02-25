@@ -10,7 +10,7 @@ def handleClient(client):
     client.recv(1024)
     client.sendall(createMessage(7))
     client.close()
-    pass
+    
 
 
 
@@ -24,6 +24,7 @@ def main():
     server = socket.create_server(("localhost", 9092), reuse_port=True)
     while True:
         client, addr = server.accept()
+        handleClient(client)
         
          
 
