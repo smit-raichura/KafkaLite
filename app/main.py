@@ -1,14 +1,37 @@
 import socket  # noqa: F401
 
-
-def createMessage(response):
-    corelationId_Bytes = response[8:12]
+def parseRequest(request):
     
-    return bytes(4) + corelationId_Bytes
+    request_obj = {
+        "message_size_bytes" : request[0:4],
+        "request_api_key_bytes" : request[4:6],
+        "request_api_version_bytes" : request[6:8],
+        "correlation_id_bytes" : request[8:12]
+
+    }
+    
+    return request_obj
+
+def isValidApiVersion(request_obj):
+    request_api_version_bytes = request_obj["request_api_version_bytes"]
+    request_api_version = int.from_bytes(request_api_version_bytes, "big")
+    if request_api_version <= 0 or request_api_version >= 4:
+        return False
+    return True
+
+def createMessage(correlation_id_bytes, isValid):
+    message = correlation_id_bytes
+    if isValid == False:
+        error_code = 35
+        message += error_code.to_bytes(2, byteorder="big")
+
+    return bytes(4) + message
 
 def handleClient(client):
-    response = client.recv(2048)
-    client.sendall(createMessage(response))
+    request = client.recv(2048)
+    request_obj = parseRequest(request = request)
+    is_valid_request_api_version = isValidApiVersion(request_obj)
+    client.sendall(createMessage(request_obj["correlation_id_bytes"], is_valid_request_api_version))
     client.close()
     
 
