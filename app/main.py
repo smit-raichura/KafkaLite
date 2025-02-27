@@ -88,7 +88,7 @@ def createMessage(request_obj, isValid):
     response_header = correlation_id_bytes
     
     
-    error_code = 0 if isValid else 35  # if isvalid then gvie no errror: 0 if invalid return error: 35
+    error_code = 0 if int.from_bytes(request_obj["request_api_version_bytes"]) in range(5) else 35  # if isvalid then gvie no errror: 0 if invalid return error: 35
     min_version, max_version = 0, 4
     throttle_time_ms = 0
     tag_buffer = b"\x00"
@@ -114,8 +114,8 @@ def createMessage(request_obj, isValid):
 def handleClient(client):
     request = client.recv(2048)
     request_obj = parseRequest(request = request)
-    is_valid_request_api_version = isValidApiVersion(request_obj)
-    client.sendall(createMessage(request_obj, is_valid_request_api_version))
+    # is_valid_request_api_version = isValidApiVersion(request_obj)
+    client.sendall(createMessage(request_obj))
     client.close()
     
 
