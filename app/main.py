@@ -88,7 +88,7 @@ def createMessage(request_obj, isValid):
     response_header = correlation_id_bytes
     
     
-    error_code = 0 if request_obj["correlation_id_bytes"] else 35 
+    error_code = 0 if isValid else 35  # if isvalid then gvie no errror: 0 if invalid return error: 35
     min_version, max_version = 0, 4
     throttle_time_ms = 0
     tag_buffer = b"\x00"
