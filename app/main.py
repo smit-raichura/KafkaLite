@@ -22,7 +22,7 @@ def isValidApiVersion(request_obj):
         return False
     return True
 
-def createMessage(request_obj, isValid):
+def createMessage(request_obj):
     '''
     header -> correlation_id
 
