@@ -52,11 +52,12 @@ def createMessage(request_obj):
     
 
 def handleClient(client):
-    request = client.recv(2048)
-    request_obj = parseRequest(request = request)
-    # is_valid_request_api_version = isValidApiVersion(request_obj)
-    client.sendall(createMessage(request_obj))
-    # client.close()
+    while True:
+        request = client.recv(2048)
+        request_obj = parseRequest(request = request)
+        # is_valid_request_api_version = isValidApiVersion(request_obj)
+        client.sendall(createMessage(request_obj))
+        # client.close()
     
 
 
@@ -69,7 +70,7 @@ def main():
     # Uncomment this to pass the first stage
     #
     server = socket.create_server(("localhost", 9092), reuse_port=True)
-    server.listen(5)
+    
     while True:
         client, addr = server.accept()
         thread = threading.Thread(target= handleClient, args=(client, ))
