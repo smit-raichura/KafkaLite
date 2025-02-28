@@ -1,5 +1,5 @@
 import socket  # noqa: F401
-# from utils.error_codes import ErrorCode
+import threading
 
 
 
@@ -23,67 +23,7 @@ def isValidApiVersion(request_obj):
     return True
 
 def createMessage(request_obj):
-    '''
-    header -> correlation_id
-
-    body -> error_code      : 0 if valid 35 if invalid
-            api_keys        : number of api keys to expect 
-                              -> each of 6 bytes, can be from 0 to 81; as there are only 81 unique differentapi_keys; can be rpresesnted in 2 bytes
-                              -> basically works as index to set 6byte off set for each api_key in the request
-                              -> eg: 
-                                    - only one api_key say produce api key = 0
-                                        error_code = 0 (0x0000)  
-                                        api_keys count = 1 (0x0001)  
-                                        api_key = 0 (0x0000)  # Produce API  
-                                        min_version = 3 (0x0003)  
-                                        max_version = 9 (0x0009)  
-                                        throttle_time_ms = 0 (0x00000000)
-
-                                        byte representation: 
-
-                                        0000  # error_code (2 bytes)
-                                        0001  # number of API keys (2 bytes)
-                                        0000  # api_key (2 bytes)
-                                        0003  # min_version (2 bytes)
-                                        0009  # max_version (2 bytes)
-                                        00000000  # throttle_time_ms (4 bytes) ...
-
-                                    - two api_key in request produce, fetch key = 0, 1 respectively
-                                        error_code = 0 (0x0000)  
-                                        api_keys count = 2 (0x0002)  
-                                        API Key 1: Produce (API Key = 0)
-                                            api_key = 0 (0x0000)  
-                                            min_version = 3 (0x0003)  
-                                            max_version = 9 (0x0009)  
-                                        API Key 2: Fetch (API Key = 1)
-                                            api_key = 1 (0x0001)  
-                                            min_version = 5 (0x0005)  
-                                            max_version = 12 (0x000C)  
-                                        throttle_time_ms = 0 (0x00000000)
-
-
-                                        byte representation:
-
-                                        0000  # error_code (2 bytes)
-                                        0002  # number of API keys (2 bytes)
-                                        0000  # api_key 1 (2 bytes)
-                                        0003  # min_version 1 (2 bytes)
-                                        0009  # max_version 1 (2 bytes)
-                                        0001  # api_key 2 (2 bytes)
-                                        0005  # min_version 2 (2 bytes)
-                                        000C  # max_version 2 (2 bytes)
-                                        00000000  # throttle_time_ms (4 bytes)
-                                // refrence of all possible api_keys: https://kafka.apache.org/protocol.html#protocol_api_keys
-
-            api_key         : which type of api is being called; values can be between 0 to 81
-            max_version     : max_version of that particular api allowed
-            min_version     : min_version of that particular api allowed
-            _tagged_fields  : \x00 for this task
-
-            throttle_time_ms : 
-            _tagged_fields   : \x00 for this task
-
-    '''
+    
     correlation_id_bytes = request_obj["correlation_id_bytes"]
     response_header = correlation_id_bytes
     
@@ -129,9 +69,11 @@ def main():
     # Uncomment this to pass the first stage
     #
     server = socket.create_server(("localhost", 9092), reuse_port=True)
-    client, addr = server.accept()
+    server.listen(5)
     while True:
-        handleClient(client)
+        client, addr = server.accept()
+        thread = threading.Thread(target= handleClient, args=(client))
+        thread.start()
     
          
 
