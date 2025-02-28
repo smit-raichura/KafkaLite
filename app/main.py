@@ -131,6 +131,7 @@ def main():
     server = socket.create_server(("localhost", 9092), reuse_port=True)
     while True:
         client, addr = server.accept()
+        handleClient(client)
         while True:
             handleClient(client)
         
