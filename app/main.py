@@ -72,7 +72,7 @@ def main():
     server.listen(5)
     while True:
         client, addr = server.accept()
-        thread = threading.Thread(target= handleClient, args=(client))
+        thread = threading.Thread(target= handleClient, args=(client, ))
         thread.start()
     
          
