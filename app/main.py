@@ -116,7 +116,7 @@ def handleClient(client):
     request_obj = parseRequest(request = request)
     # is_valid_request_api_version = isValidApiVersion(request_obj)
     client.sendall(createMessage(request_obj))
-    client.close()
+    # client.close()
     
 
 
@@ -129,12 +129,10 @@ def main():
     # Uncomment this to pass the first stage
     #
     server = socket.create_server(("localhost", 9092), reuse_port=True)
+    client, addr = server.accept()
     while True:
-        client, addr = server.accept()
         handleClient(client)
-        while True:
-            handleClient(client)
-        
+    
          
 
 
