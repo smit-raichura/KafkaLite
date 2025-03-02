@@ -28,7 +28,12 @@ def createMessage(request_obj):
 
     # Body:
     # - Error code (2 bytes, big-endian, 0 = No Error)
-    error_code = 0
+    
+    error_code = (
+        0
+        if int.from_bytes(request_obj["request_api_version_bytes"]) in range(5)
+        else 35
+    )
     error_code_bytes = error_code.to_bytes(2, byteorder="big")
     tagged_fields_bytes = b"\x00"
     # - API versions list:
