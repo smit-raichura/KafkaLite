@@ -43,11 +43,12 @@ def createMessage(request_obj):
     api_versions_length_bytes = (len(api_versions) + 1).to_bytes(1, byteorder='big')
     # Encode the API versions list
     api_versions_bytes = b""
-    for api_key, min_version, max_version in api_versions:
+    for api_key, min_version, max_version, tag_buffter in api_versions:
         api_versions_bytes += (
             api_key.to_bytes(2, byteorder="big")
             + min_version.to_bytes(2, byteorder="big")
             + max_version.to_bytes(2, byteorder="big")
+            + tag_buffter
         )
 
     # - Tagged fields (TAG_BUFFER):
