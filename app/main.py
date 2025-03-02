@@ -50,8 +50,13 @@ def createMessage(request_obj):
             + max_version.to_bytes(2, byteorder="big")
         )
 
+    # - Tagged fields (TAG_BUFFER):
+    #   - TAG_BUFFER length (1 byte, unsigned varint)
+    #   - TAGGED_FIELD_ARRAY (empty in this case)
+    tagged_fields_bytes = b"\x00"  # Length of 0 (no tagged fields)
+
     # Combine the body
-    body = error_code_bytes + api_versions_bytes
+    body = error_code_bytes + api_versions_bytes + tagged_fields_bytes
 
     # Calculate the message length (4 bytes, big-endian)
     message_length = len(header) + len(body)
