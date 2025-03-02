@@ -23,32 +23,45 @@ def isValidApiVersion(request_obj):
     return True
 
 def createMessage(request_obj):
-    
-    correlation_id_bytes = request_obj["correlation_id_bytes"]
-    response_header = correlation_id_bytes
-    
-    
-    error_code = 0 if int.from_bytes(request_obj["request_api_version_bytes"]) in range(5) else 35  # if isvalid then gvie no errror: 0 if invalid return error: 35
-    min_version, max_version = 0, 4
-    throttle_time_ms = 0
-    tag_buffer = b"\x00"
-    api_key_bytes = request_obj["request_api_key_bytes"]
-    api_keys = 2
 
-    response_body = (
-        error_code.to_bytes(2) #error_code
-        + api_keys.to_bytes(1)
-        + api_key_bytes
-        + min_version.to_bytes(2)
-        + max_version.to_bytes(2)
-        + tag_buffer
-        + throttle_time_ms.to_bytes(4)
-        + tag_buffer
-    )
+    header = request_obj["correlation_id_bytes"]
 
-    response_length = len(response_header + response_body)
+    # Body:
+    # - Error code (2 bytes, big-endian, 0 = No Error)
+    error_code = 0
+    error_code_bytes = error_code.to_bytes(2, byteorder="big")
 
-    return int(response_length).to_bytes(4) + response_header + response_body
+    # - API versions list:
+    #   Each entry contains:
+    #   - API key (2 bytes, big-endian)
+    #   - MinVersion (2 bytes, big-endian)
+    #   - MaxVersion (2 bytes, big-endian)
+    api_versions = [
+        (18, 0, 4),  # APIVersions (API key 18)
+        (75, 0, 0),  # DescribeTopicPartitions (API key 75)
+    ]
+
+    # Encode the API versions list
+    api_versions_bytes = b""
+    for api_key, min_version, max_version in api_versions:
+        api_versions_bytes += (
+            api_key.to_bytes(2, byteorder="big")
+            + min_version.to_bytes(2, byteorder="big")
+            + max_version.to_bytes(2, byteorder="big")
+        )
+
+    # Combine the body
+    body = error_code_bytes + api_versions_bytes
+
+    # Calculate the message length (4 bytes, big-endian)
+    message_length = len(header) + len(body)
+    message_length_bytes = message_length.to_bytes(4, byteorder="big")
+
+    # Combine everything into the final message
+    message = message_length_bytes + header + body
+    return message
+    
+    
     
 
 def handleClient(client):
