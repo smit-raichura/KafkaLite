@@ -30,17 +30,17 @@ def createMessage(request_obj):
     # - Error code (2 bytes, big-endian, 0 = No Error)
     error_code = 0
     error_code_bytes = error_code.to_bytes(2, byteorder="big")
-
+    tagged_fields_bytes = b"\x00"
     # - API versions list:
     #   Each entry contains:
     #   - API key (2 bytes, big-endian)
     #   - MinVersion (2 bytes, big-endian)
     #   - MaxVersion (2 bytes, big-endian)
     api_versions = [
-        (18, 0, 4),  # APIVersions (API key 18)
-        (75, 0, 0),  # DescribeTopicPartitions (API key 75)
+        (18, 0, 4, tagged_fields_bytes),  # APIVersions (API key 18)
+        (75, 0, 0, tagged_fields_bytes),  # DescribeTopicPartitions (API key 75)
     ]
-
+    api_versions_length_bytes = (len(api_versions) + 1).to_bytes(1, byteorder='big')
     # Encode the API versions list
     api_versions_bytes = b""
     for api_key, min_version, max_version in api_versions:
@@ -53,10 +53,11 @@ def createMessage(request_obj):
     # - Tagged fields (TAG_BUFFER):
     #   - TAG_BUFFER length (1 byte, unsigned varint)
     #   - TAGGED_FIELD_ARRAY (empty in this case)
-    tagged_fields_bytes = b"\x00"  # Length of 0 (no tagged fields)
+    throttle_time = 0
+    throttle_time_bytes = throttle_time.to_bytes(4)
 
     # Combine the body
-    body = error_code_bytes + api_versions_bytes + tagged_fields_bytes
+    body = error_code_bytes + api_versions_length_bytes + api_versions_bytes + throttle_time_bytes + tagged_fields_bytes
 
     # Calculate the message length (4 bytes, big-endian)
     message_length = len(header) + len(body)
