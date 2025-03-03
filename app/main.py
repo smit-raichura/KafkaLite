@@ -185,7 +185,7 @@ def make_response_describeTopicPartitions(request_obj):
         topics_arr.append(error_code)
         topics_arr.append(len_)
         print(f'topic_name_len : {len_}')
-        topics_arr.appned(name)
+        topics_arr.append(name)
         topics_arr.append(topic_id)
         topics_arr.append(is_internal)
         topics_arr.append(partitions_array)
