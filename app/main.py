@@ -53,6 +53,7 @@ def parseRequest(request):
 # --------------------- Request Body ----------------------------------------
     topics_array_len_bytes = request[index : index + 1]
     topics_array_len = int.from_bytes(topics_array_len_bytes)
+    print(f'topics_arr_len : {topics_array_len}')
     index += 1
 
     topics_arr = ()
