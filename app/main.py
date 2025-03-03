@@ -173,9 +173,9 @@ def make_response_describeTopicPartitions(request_obj):
     partitions_array = 0
     topic_authorized_operations = int("00000df8", 16) # 4 bytes
 
-    for len, name, buffer in req_topics_arr:
+    for len_, name, buffer in req_topics_arr:
         topics_arr.append(error_code)
-        topics_arr.append(len)
+        topics_arr.append(len_)
         topics_arr.appned(name)
         topics_arr.append(topic_id)
         topics_arr.append(is_internal)
