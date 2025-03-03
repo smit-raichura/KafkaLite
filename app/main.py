@@ -182,15 +182,16 @@ def make_response_describeTopicPartitions(request_obj):
     topic_authorized_operations = int("00000df8", 16) # 4 bytes
 
     for len_, name, buffer in req_topics_arr:
-        topics_arr.append(error_code)
-        topics_arr.append(len_)
+        tup = []
+        tup.append(error_code)
+        tup.append(len_)
         print(f'topic_name_len : {len_}')
-        topics_arr.append(name)
-        topics_arr.append(topic_id)
-        topics_arr.append(is_internal)
-        topics_arr.append(partitions_array)
-        topics_arr.append(topic_authorized_operations)
-
+        tup.append(name)
+        tup.append(topic_id)
+        tup.append(is_internal)
+        tup.append(partitions_array)
+        tup.append(topic_authorized_operations)
+        topics_arr.append(tup)
     response_body += len(topics_arr).to_bytes(1)
 
     print(f'topics_arr_response : {topics_arr} \n topics.length : {len(topics_arr)}')
