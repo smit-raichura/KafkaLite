@@ -37,6 +37,7 @@ def parseRequest(request):
     index = 14 + client_id_string_len
     
     tag_buffer = b'\x00'
+    tag_buffer = request[index:index + 1]
     index += 1
 # --------------------- Request Header ----------------------------------------
 
@@ -51,10 +52,10 @@ def parseRequest(request):
     print(f'REQUEST_HEADER : {header}')
 
 # --------------------- Request Body ----------------------------------------
-    topics_array_len_bytes = request[index : index + 1]
+    topics_array_len_bytes = request[index : index + 2]
     topics_array_len = int.from_bytes(topics_array_len_bytes)
     print(f'topics_arr_len : {topics_array_len}')
-    index += 1
+    index += 2
 
     topics_arr = ()
     for i in range(index, topics_array_len):
