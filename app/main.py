@@ -60,7 +60,7 @@ def parseRequest(request):
     print(f'index : {index} topics_arr_len : {topics_array_len}')
 
     topics_arr = []
-    for i in range(topics_array_len ):
+    for i in range(topics_array_len-1):
         topic_name_str_len_bytes =  request[index: index + 1]
         topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
         index += 1
