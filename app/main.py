@@ -200,7 +200,7 @@ def make_response_describeTopicPartitions(request_obj):
 
     
     message = response_header + response_body
-    response = len(message) + message
+    response = len(message).to_bytes(4) + message
 
     return response
     
