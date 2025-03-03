@@ -296,7 +296,7 @@ def main():
         client, addr = server.accept()
         thread = threading.Thread(target= handleClient, args=(client, ))
         thread.start()
-        print(f"Started thread: {thread.name}, Alive: {thread.is_alive()}, Daemon: {thread.daemon}")
+        # print(f"Started thread: {thread.name}, Alive: {thread.is_alive()}, Daemon: {thread.daemon}")
          
 
 
