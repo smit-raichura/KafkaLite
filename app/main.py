@@ -14,6 +14,8 @@ def isValidApiVersion(request_obj):
 
 
 def parseRequest(request):
+
+    print(f' RAW_REQUEST : {request}')
     
     msg_len_bytes = request [:4]
     msg_len = int.from_bytes(msg_len_bytes)
@@ -66,6 +68,7 @@ def parseRequest(request):
         tag_buffer
         index += 1
 
+        print(f'topics_arr : {i} : {(topic_name_str_len, topic_name, tag_buffer)}')
         topics_arr.append((topic_name_str_len, topic_name, tag_buffer))
 
     response_partition_limit_bytes = request[index: index + 4]
