@@ -3,17 +3,7 @@ import threading
 
 
 
-def parseRequest(request):
-    
-    request_obj = {
-        "message_size_bytes" : request[0:4],
-        "request_api_key_bytes" : request[4:6],
-        "request_api_version_bytes" : request[6:8],
-        "correlation_id_bytes" : request[8:12]
 
-    }
-    
-    return request_obj
 
 def isValidApiVersion(request_obj):
     request_api_version_bytes = request_obj["request_api_version_bytes"]
@@ -22,7 +12,199 @@ def isValidApiVersion(request_obj):
         return False
     return True
 
-def createMessage(request_obj):
+
+def parseRequest(request):
+    
+    msg_len_bytes = request [:4]
+    msg_len = int.from_bytes(msg_len_bytes)
+# --------------------- Request Header ----------------------------------------    
+    api_key_bytes = request[4:6]
+    api_key = int.from_bytes(api_key_bytes)
+
+    api_version_bytes = request[4:8]
+    api_version = int.from_bytes(api_version_bytes)
+
+    correlation_id_bytes = request[8:12]
+    correlation_id = int.from_bytes(correlation_id_bytes)
+
+    client_id_string_len_bytes = request[12:14]
+    client_id_string_len = int.from_bytes(client_id_string_len_bytes)
+
+    clinet_id_bytes : bytes = request[14: 14 + client_id_string_len]
+    client_id = clinet_id_bytes.decode('utf-8')
+    index = 14 + client_id_string_len
+    
+    tag_buffer = b'\x00'
+    index += 1
+# --------------------- Request Header ----------------------------------------
+
+    header = {
+        "msg_len" : msg_len,
+        "api_key" : api_key,
+        "api_version" : api_version,
+        "correlation_id" : correlation_id,
+        "client_id" : client_id
+    }
+
+    print(f'REQUEST_HEADER : {header}')
+
+# --------------------- Request Body ----------------------------------------
+    topics_array_len_bytes = request[index : index + 1]
+    topics_array_len = int.from_bytes(topics_array_len_bytes)
+    index += 1
+
+    topics_arr = ()
+    for i in range(index, topics_array_len):
+        topic_name_str_len_bytes =  request[index: index + 1]
+        topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
+        index += 1
+
+        topic_name_bytes : bytes = request[index : index + topic_name_str_len]
+        topic_name = topic_name_bytes.decode('utf-8')
+        index += topic_name_str_len
+
+        tag_buffer
+        index += 1
+
+        topics_arr.append((topic_name_str_len, topic_name, tag_buffer))
+
+    response_partition_limit_bytes = request[index: index + 4]
+    response_partition_limit = int.from_bytes(response_partition_limit_bytes)
+    index += 4
+
+    cursor_bytes = b'\xff'
+    index += 1
+
+    tag_buffer
+    index += 1
+
+# --------------------- Request Body ----------------------------------------
+    body = {
+        "topics_arr" : topics_arr,
+        "response_partition_limit" : response_partition_limit,
+        "cursor_bytes" : cursor_bytes
+    }
+    print(f'REQUEST_BODY : {body}')
+
+    request_obj = {
+        "header" : header,
+        "body" : body
+    }
+
+    return request_obj
+'''
+ DescribeTopicPartitions (v0) request:
+
+ message_length_bytes : 4 endian int
+----------- Header -----------  
+ api_key : 2 int
+ api_version : 2 int
+ correlation_id : 4 int
+ client_id_len : 4 int
+ client_id_content : client_id_len
+ tag_buffer : 1 
+----------- Header ----------- 
+----------- Body ----------- 
+ topic_array_len : 2 int
+    topic_name_len : 2 int
+    topic_name : topic_name_len str(utf-8)
+    tag_buffer : 1
+ response_partition_limit : 4 int
+ cursor : 1 nullable; default: b'\xff'
+ tag_buffer : 1
+
+DescribeTopicPartitions Request (Version: 0) => [topics] response_partition_limit cursor TAG_BUFFER 
+  topics => name TAG_BUFFER 
+    name => COMPACT_STRING
+  response_partition_limit => INT32
+  cursor => topic_name partition_index TAG_BUFFER 
+    topic_name => COMPACT_STRING
+    partition_index => INT32
+
+
+The tester will validate that:
+
+The first 4 bytes of your response (the "message length") are valid.
+The correlation ID in the response header matches the correlation ID in the request header.
+The error code in the response body is 3 (UNKNOWN_TOPIC_OR_PARTITION).
+The response body should be valid DescribeTopicPartitions (v0) Response.
+The topic_name field in the response should be equal to the topic name sent in the request.
+The topic_id field in the response should be equal to 00000000-0000-0000-0000-000000000000.
+The partitions field in the response should be empty. (As there are no partitions assigned to this non-existent topic.)
+'''
+def make_response_describeTopicPartitions(request_obj):
+    '''
+    messg_len : 4 int 
+    ------ header -------
+    
+    correlation_id : 4 int
+    tag_buffer : 1
+    ------ header -------
+    '''
+    request_header = request_obj['header']
+    correlation_id :int = request_header['correlation_id']
+    correlation_id_bytes = correlation_id.to_bytes(4)
+    tag_buffer = b'\x00'
+
+    response_header = correlation_id_bytes + tag_buffer
+
+    request_body = request_obj["body"]
+
+    response_body = None
+
+    throttle_time_ms = 0 # 4 bytes
+    throttle_time_bytes = throttle_time_ms.to_bytes(4)
+    
+    response_body += throttle_time_bytes
+
+    topics_arr =()
+    req_topics_arr_len = len(request_body["topics_arr"])
+    req_topics_arr = request_body['topics_arr']
+
+    error_code = 3
+
+    topic_id = '00000000-0000-0000-0000-000000000000' # 16 byte
+    topic_id_bytes = bytes.fromhex(topic_id.replace("-", "")) 
+    is_internal = 0
+    partitions_array = 0
+    topic_authorized_operations = int("00000df8", 16) # 4 bytes
+
+    for len, name, buffer in req_topics_arr:
+        topics_arr.append(error_code)
+        topics_arr.append(len)
+        topics_arr.appned(name)
+        topics_arr.append(topic_id)
+        topics_arr.append(is_internal)
+        topics_arr.append(partitions_array)
+        topics_arr.append(topic_authorized_operations)
+
+    response_body += len(topics_arr).to_bytes(1)
+
+    for error, len_, name_, uuid, is_internal_, part_arr, ops in topics_arr:
+        response_body += error.to_bytes(2)
+        response_body += len_.to_bytes(1)
+        response_body += name_.decode('utf-8')
+        response_body += bytes.fromhex(uuid.replace("-", ""))
+        response_body += is_internal_.to_bytes(1)
+        response_body += part_arr.to_bytes(1) 
+        response_body += ops.to_bytes(4)
+        response_body += tag_buffer
+    
+    next_cursor_bytes =  b'\xff'
+    response_body += next_cursor_bytes
+    response_body += tag_buffer
+
+    
+    message = response_header + response_body
+    response = len(message) + message
+
+    return response
+    
+
+
+
+
+def make_response_apiVersions(request_obj):
 
     header = request_obj["correlation_id_bytes"]
 
@@ -81,7 +263,7 @@ def handleClient(client):
         request = client.recv(2048)
         request_obj = parseRequest(request = request)
         # is_valid_request_api_version = isValidApiVersion(request_obj)
-        client.sendall(createMessage(request_obj))
+        client.sendall(make_response_describeTopicPartitions(request_obj))
         # client.close()
     
 
@@ -107,83 +289,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-# import socket
-# from abc import ABC, abstractmethod
-
-# class KafkaRequestParser:
-#     """Handles parsing of Kafka requests."""
-#     @staticmethod
-#     def parse(request: bytes) -> dict:
-#         return {
-#             "message_size_bytes": request[0:4],
-#             "request_api_key_bytes": request[4:6],
-#             "request_api_version_bytes": request[6:8],
-#             "correlation_id_bytes": request[8:12]
-#         }
-
-# class KafkaResponseBuilder:
-#     """Constructs responses for Kafka requests."""
-#     @staticmethod
-#     def create_response(request_obj: dict) -> bytes:
-#         correlation_id_bytes = request_obj["correlation_id_bytes"]
-#         response_header = correlation_id_bytes
-        
-#         error_code = 0 if int.from_bytes(request_obj["request_api_version_bytes"], "big") in range(5) else 35
-#         min_version, max_version = 0, 4
-#         throttle_time_ms = 0
-#         tag_buffer = b"\x00"
-#         api_key_bytes = request_obj["request_api_key_bytes"]
-#         api_keys = 2
-        
-#         response_body = (
-#             error_code.to_bytes(2, "big") +
-#             api_keys.to_bytes(1, "big") +
-#             api_key_bytes +
-#             min_version.to_bytes(2, "big") +
-#             max_version.to_bytes(2, "big") +
-#             tag_buffer +
-#             throttle_time_ms.to_bytes(4, "big") +
-#             tag_buffer
-#         )
-
-#         response_length = len(response_header + response_body)
-#         return int(response_length).to_bytes(4, "big") + response_header + response_body
-
-# class KafkaRequestHandler(ABC):
-#     """Abstract base class for handling Kafka requests."""
-#     @abstractmethod
-#     def handle(self, request_obj: dict) -> bytes:
-#         pass
-
-# class ApiVersionsHandler(KafkaRequestHandler):
-#     """Handles API Version requests."""
-#     def handle(self, request_obj: dict) -> bytes:
-#         return KafkaResponseBuilder.create_response(request_obj)
-
-# class KafkaServer:
-#     """Manages the Kafka server."""
-#     def __init__(self, host: str = "localhost", port: int = 9092):
-#         self.host = host
-#         self.port = port
-#         self.server = socket.create_server((self.host, self.port), reuse_port=True)
-#         self.handlers = {0: ApiVersionsHandler()}
-    
-#     def handle_client(self, client_socket: socket.socket):
-#         request = client_socket.recv(2048)
-#         request_obj = KafkaRequestParser.parse(request)
-#         api_key = int.from_bytes(request_obj["request_api_key_bytes"], "big")
-        
-#         handler = self.handlers.get(api_key, ApiVersionsHandler())
-#         response = handler.handle(request_obj)
-#         client_socket.sendall(response)
-#         client_socket.close()
-    
-#     def start(self):
-#         print(f"Kafka server running on {self.host}:{self.port}")
-#         while True:
-#             client, _ = self.server.accept()
-#             self.handle_client(client)
-
-# if __name__ == "__main__":
-    server = KafkaServer()
-    server.start()
