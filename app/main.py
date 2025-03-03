@@ -14,8 +14,8 @@ def isValidApiVersion(request_obj):
 
 
 def parseRequest(request):
-
-    print(f' RAW_REQUEST : {request}')
+    print('----------------------- Parsing Request ----------------------')
+    print(f'RAW_REQUEST : {request}')
     
     msg_len_bytes = request [:4]
     msg_len = int.from_bytes(msg_len_bytes)
@@ -58,7 +58,7 @@ def parseRequest(request):
     index += 1
 
     topics_arr = ()
-    for i in range(index, topics_array_len - 1):
+    for i in range(index, topics_array_len ):
         topic_name_str_len_bytes =  request[index: index + 1]
         topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
         index += 1
@@ -72,6 +72,8 @@ def parseRequest(request):
 
         print(f'topics_arr : {i} : {(topic_name_str_len, topic_name, tag_buffer)}')
         topics_arr.append((topic_name_str_len, topic_name, tag_buffer))
+
+    print(f'topics_arr : {topics_arr}')
 
     response_partition_limit_bytes = request[index: index + 4]
     response_partition_limit = int.from_bytes(response_partition_limit_bytes)
@@ -95,6 +97,7 @@ def parseRequest(request):
         "header" : header,
         "body" : body
     }
+    print('----------------------- Parsing Request ----------------------')
 
     return request_obj
 '''
@@ -146,6 +149,8 @@ def make_response_describeTopicPartitions(request_obj):
     tag_buffer : 1
     ------ header -------
     '''
+    print('----------------------- Making Response ----------------------')
+
     request_header = request_obj['header']
     correlation_id :int = request_header['correlation_id']
     correlation_id_bytes = correlation_id.to_bytes(4)
@@ -186,6 +191,8 @@ def make_response_describeTopicPartitions(request_obj):
 
     response_body += len(topics_arr).to_bytes(1)
 
+    print(f'topics_arr_response : {topics_arr} \n topics.length : {len(topics_arr)}')
+
     for error, len_, name_, uuid, is_internal_, part_arr, ops in topics_arr:
         response_body += error.to_bytes(2)
         response_body += len_.to_bytes(1)
@@ -203,6 +210,7 @@ def make_response_describeTopicPartitions(request_obj):
     
     message = response_header + response_body
     response = len(message).to_bytes(4) + message
+    print('----------------------- Making Response ----------------------')
 
     return response
     
@@ -288,7 +296,7 @@ def main():
         client, addr = server.accept()
         thread = threading.Thread(target= handleClient, args=(client, ))
         thread.start()
-    
+        print(f"Started thread: {thread.name}, Alive: {thread.is_alive()}, Daemon: {thread.daemon}")
          
 
 
