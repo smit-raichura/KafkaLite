@@ -52,10 +52,10 @@ def parseRequest(request):
     print(f'REQUEST_HEADER : {header}')
 
 # --------------------- Request Body ----------------------------------------
-    topics_array_len_bytes = request[index : index + 2]
+    topics_array_len_bytes = request[index : index + 1]
     topics_array_len = int.from_bytes(topics_array_len_bytes)
     print(f'topics_arr_len : {topics_array_len}')
-    index += 2
+    index += 1
 
     topics_arr = ()
     for i in range(index, topics_array_len):
@@ -187,7 +187,7 @@ def make_response_describeTopicPartitions(request_obj):
 
     for error, len_, name_, uuid, is_internal_, part_arr, ops in topics_arr:
         response_body += error.to_bytes(2)
-        response_body += len_.to_bytes(1)
+        response_body += len_.to_bytes(2)
         response_body += name_.decode('utf-8')
         response_body += bytes.fromhex(uuid.replace("-", ""))
         response_body += is_internal_.to_bytes(1)
