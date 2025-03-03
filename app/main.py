@@ -59,7 +59,7 @@ def parseRequest(request):
 
     print(f'index : {index} topics_arr_len : {topics_array_len}')
 
-    topics_arr = ()
+    topics_arr = []
     for i in range(topics_array_len ):
         topic_name_str_len_bytes =  request[index: index + 1]
         topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
@@ -169,7 +169,7 @@ def make_response_describeTopicPartitions(request_obj):
     
     response_body = throttle_time_bytes
 
-    topics_arr =()
+    topics_arr =[]
     req_topics_arr_len = len(request_body["topics_arr"])
     req_topics_arr = request_body['topics_arr']
 
