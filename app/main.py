@@ -150,12 +150,12 @@ def make_response_describeTopicPartitions(request_obj):
 
     request_body = request_obj["body"]
 
-    response_body = None
+    
 
     throttle_time_ms = 0 # 4 bytes
     throttle_time_bytes = throttle_time_ms.to_bytes(4)
     
-    response_body += throttle_time_bytes
+    response_body = throttle_time_bytes
 
     topics_arr =()
     req_topics_arr_len = len(request_body["topics_arr"])
