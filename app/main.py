@@ -199,7 +199,7 @@ def make_response_describeTopicPartitions(request_obj):
     for error, len_, name_, uuid, is_internal_, part_arr, ops in topics_arr:
         response_body += error.to_bytes(2)
         response_body += len_.to_bytes(1)
-        response_body += name_.decode('utf-8')
+        response_body += name_.encode('utf-8')
         response_body += bytes.fromhex(uuid.replace("-", ""))
         response_body += is_internal_.to_bytes(1)
         response_body += part_arr.to_bytes(1) 
