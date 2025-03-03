@@ -214,7 +214,7 @@ def make_response_describeTopicPartitions(request_obj):
     message = response_header + response_body
     response = len(message).to_bytes(4) + message
     print('----------------------- Making Response ----------------------')
-
+    print(response.hex())
     return response
     
 
