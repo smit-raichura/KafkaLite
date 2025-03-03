@@ -56,7 +56,7 @@ def parseRequest(request):
     index += 1
 
     topics_arr = ()
-    for i in range(index, topics_array_len):
+    for i in range(index - 1, topics_array_len):
         topic_name_str_len_bytes =  request[index: index + 1]
         topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
         index += 1
