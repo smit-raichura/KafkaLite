@@ -65,7 +65,7 @@ def parseRequest(request):
         topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
         index += 1
 
-        topic_name_bytes : bytes = request[index : index + topic_name_str_len]
+        topic_name_bytes : bytes = request[index : index + topic_name_str_len - 1]
         topic_name = topic_name_bytes.decode('utf-8')
         index += topic_name_str_len
 
