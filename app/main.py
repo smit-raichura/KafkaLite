@@ -170,7 +170,7 @@ def make_response_describeTopicPartitions(request_obj):
     response_body = throttle_time_bytes
 
     topics_arr =[]
-    req_topics_arr_len = len(request_body["topics_arr"])
+    req_topics_arr_len = len(request_body["topics_arr"]) - 1
     req_topics_arr = request_body['topics_arr']
 
     error_code = 3
@@ -202,7 +202,7 @@ def make_response_describeTopicPartitions(request_obj):
         response_body += name_.encode('utf-8')
         response_body += bytes.fromhex(uuid.replace("-", ""))
         response_body += is_internal_.to_bytes(1)
-        response_body += part_arr.to_bytes(1) 
+        # response_body += part_arr.to_bytes(1) 
         response_body += ops.to_bytes(4)
         response_body += tag_buffer
     
