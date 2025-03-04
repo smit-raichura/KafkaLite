@@ -178,7 +178,7 @@ def make_response_describeTopicPartitions(request_obj):
     topic_id = '00000000-0000-0000-0000-000000000000' # 16 byte
     topic_id_bytes = bytes.fromhex(topic_id.replace("-", "")) 
     is_internal = 0
-    partitions_array = 0
+    partitions_array = 1
     topic_authorized_operations = int("00000df8", 16) # 4 bytes
 
     for len_, name, buffer in req_topics_arr:
@@ -202,7 +202,7 @@ def make_response_describeTopicPartitions(request_obj):
         response_body += name_.encode('utf-8')
         response_body += bytes.fromhex(uuid.replace("-", ""))
         response_body += is_internal_.to_bytes(1)
-        # response_body += part_arr.to_bytes(1) 
+        response_body += part_arr.to_bytes(1) 
         response_body += ops.to_bytes(4)
         response_body += tag_buffer
     
