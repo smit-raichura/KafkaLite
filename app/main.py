@@ -164,7 +164,7 @@ def make_response_describeTopicPartitions(request_obj):
     req_topics_arr = request_body["topics_arr"]
 
     throttle_time = 0
-    array_length = len(req_topics_arr)
+    array_length = len(req_topics_arr) + 1
     error_code = 3
     topic_name_length = req_topics_arr[0][0]
     topic_name : str = req_topics_arr[0][1]
