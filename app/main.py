@@ -161,60 +161,85 @@ def make_response_describeTopicPartitions(request_obj):
     response_header = correlation_id_bytes + tag_buffer
 
     request_body = request_obj["body"]
+    req_topics_arr = request_body["topics_arr"]
 
-    
-
-    throttle_time_ms = 0 # 4 bytes
-    throttle_time_bytes = throttle_time_ms.to_bytes(4)
-    
-    response_body = throttle_time_bytes
-
-    topics_arr =[]
-    req_topics_arr_len = len(request_body["topics_arr"]) - 1
-    req_topics_arr = request_body['topics_arr']
-
+    throttle_time = 0
+    array_length = len(req_topics_arr)
     error_code = 3
-
-    topic_id = '00000000-0000-0000-0000-000000000000' # 16 byte
-    topic_id_bytes = bytes.fromhex(topic_id.replace("-", "")) 
+    topic_name_length = req_topics_arr[0][0]
+    topic_name : str = req_topics_arr[0][1]
+    topic_id = '00000000000000000000000000000000'
     is_internal = 0
-    partitions_array = 1
-    topic_authorized_operations = int("00000df8", 16) # 4 bytes
+    partitions_array_len = 0
+    topic_authorized_ops =  0x00000df8
+    tag_buffer = b'\x00'
+    next_cursor = b'\xff'
 
-    for len_, name, buffer in req_topics_arr:
-        tup = []
-        tup.append(error_code)
-        tup.append(len_)
-        print(f'topic_name_len : {len_}')
-        tup.append(name)
-        tup.append(topic_id)
-        tup.append(is_internal)
-        tup.append(partitions_array)
-        tup.append(topic_authorized_operations)
-        topics_arr.append(tup)
-    response_body += len(topics_arr).to_bytes(1)
+    response_body = (
+        throttle_time.to_bytes(4),
+        array_length.to_bytes(1),
+        error_code.to_bytes(2),
+        topic_name.encode('utf-8'),
+        bytes.fromhex(topic_id),
+        is_internal.to_bytes(1),
+        partitions_array_len.to_bytes(1),
+        topic_authorized_ops.to_bytes(4),
+        tag_buffer,
+        next_cursor,
+        tag_buffer
+    )
 
-    print(f'topics_arr_response : {topics_arr} \n topics.length : {len(topics_arr)}')
-
-    for error, len_, name_, uuid, is_internal_, part_arr, ops in topics_arr:
-        response_body += error.to_bytes(2)
-        response_body += len_.to_bytes(1)
-        response_body += name_.encode('utf-8')
-        response_body += bytes.fromhex(uuid.replace("-", ""))
-        response_body += is_internal_.to_bytes(1)
-        response_body += part_arr.to_bytes(1) 
-        response_body += ops.to_bytes(4)
-        response_body += tag_buffer
+    # throttle_time_ms = 0 # 4 bytes
+    # throttle_time_bytes = throttle_time_ms.to_bytes(4)
     
-    next_cursor_bytes =  b'\xff'
-    response_body += next_cursor_bytes
-    response_body += tag_buffer
+    # response_body = throttle_time_bytes
+
+    # topics_arr =[]
+    # req_topics_arr_len = len(request_body["topics_arr"]) 
+    # req_topics_arr = request_body['topics_arr']
+
+    # error_code = 3 #
+
+    # topic_id = '00000000-0000-0000-0000-000000000000' # 16 byte #
+    # topic_id_bytes = bytes.fromhex(topic_id.replace("-", "")) 
+    # is_internal = 0 #
+    # partitions_array = 0 #
+    # topic_authorized_operations = int("00000df8", 16) # 4 bytes
+
+    # for len_, name, buffer in req_topics_arr:
+    #     tup = []
+    #     tup.append(error_code)
+    #     tup.append(len_)
+    #     print(f'topic_name_len : {len_}')
+    #     tup.append(name)
+    #     tup.append(topic_id)
+    #     tup.append(is_internal)
+    #     tup.append(partitions_array)
+    #     tup.append(topic_authorized_operations)
+    #     topics_arr.append(tup)
+    # response_body += len(topics_arr).to_bytes(1)
+
+    # print(f'topics_arr_response : {topics_arr} \n topics.length : {len(topics_arr)}')
+
+    # for error, len_, name_, uuid, is_internal_, part_arr, ops in topics_arr:
+    #     response_body += error.to_bytes(2)
+    #     response_body += len_.to_bytes(1)
+    #     response_body += name_.encode('utf-8')
+    #     response_body += bytes.fromhex(uuid.replace("-", ""))
+    #     response_body += is_internal_.to_bytes(1)
+    #     response_body += part_arr.to_bytes(1) 
+    #     response_body += ops.to_bytes(4)
+    #     response_body += tag_buffer
+    
+    # next_cursor_bytes =  b'\xff'
+    # response_body += next_cursor_bytes
+    # response_body += tag_buffer
 
     
     message = response_header + response_body
     response = len(message).to_bytes(4) + message
     print('----------------------- Making Response ----------------------')
-    print(response.hex())
+    # print(response.hex())
     return response
     
 
