@@ -179,6 +179,7 @@ def make_response_describeTopicPartitions(request_obj):
         throttle_time.to_bytes(4),
         array_length.to_bytes(1),
         error_code.to_bytes(2),
+        topic_name_length.to_bytes(1),
         topic_name.encode('utf-8'),
         bytes.fromhex(topic_id),
         is_internal.to_bytes(1),
