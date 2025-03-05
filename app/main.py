@@ -235,7 +235,7 @@ def make_response_describeTopicPartitions(request_obj):
     # response_body += next_cursor_bytes
     # response_body += tag_buffer
 
-    
+    print(f'response_body : {response_body}')
     message = response_header + b''.join(response_body)
     response = len(message).to_bytes(4) + message
     print('----------------------- Making Response ----------------------')
