@@ -23,7 +23,7 @@ class DescribeTopicPartitionsRequest(Request):
         topics_array_len = int.from_bytes(request[index:index + 1])
         index += 1
         topics_arr = []
-        for _ in range(topics_array_len):
+        for _ in range(topics_array_len - 1):
             topic_name_len = int.from_bytes(request[index:index + 1])
             index += 1
             topic_name = request[index:index + topic_name_len].decode('utf-8')
