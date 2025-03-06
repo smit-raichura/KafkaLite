@@ -54,7 +54,7 @@ class DescribeTopicPartitionsResponse(Response):
             next_cursor,  # next_cursor (1 byte)
             tagged_fields  # TAG_BUFFER (1 byte)
         )
-        print(f"Response Body: {response_body_bytes}")
+        print(f"Response Body: {response_body}")
         # Combine the response body into bytes
         response_body_bytes = b''.join(response_body)
         print(f"Response Body: {response_body_bytes.hex()}")
