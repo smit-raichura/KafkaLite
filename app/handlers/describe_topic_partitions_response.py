@@ -31,7 +31,7 @@ class DescribeTopicPartitionsResponse(Response):
         array_length = 2  # Only one topic in the response (INT8)
         error_code = 3  # INT16 (UNKNOWN_TOPIC_OR_PARTITION)
         topic_name = req_topics_arr[0][1]  # COMPACT_NULLABLE_STRING
-        topic_name_length = len(topic_name)  # Length of the topic name
+        topic_name_length = len(topic_name)+1  # Length of the topic name
         topic_id = bytes.fromhex('00000000000000000000000000000000')  # UUID (16 bytes)
         is_internal = 0  # BOOLEAN (1 byte)
         partitions_array_len = 0  # No partitions (INT8)
