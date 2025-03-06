@@ -16,7 +16,7 @@ class DescribeTopicPartitionsRequest(Request):
         index += 4
         client_id_len = int.from_bytes(request[index:index + 2])
         index += 2
-        client_id = request[index:index + client_id_len - 1].decode('utf-8')
+        client_id = request[index:index + client_id_len].decode('utf-8')
         index += client_id_len
         tag_buffer = request[index:index + 1]
         index += 1
