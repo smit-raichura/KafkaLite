@@ -28,7 +28,7 @@ class DescribeTopicPartitionsResponse(Response):
 
         # Response body fields
         throttle_time_ms = 0  # INT32
-        array_length = 1  # Only one topic in the response (INT8)
+        array_length = 2  # Only one topic in the response (INT8)
         error_code = 3  # INT16 (UNKNOWN_TOPIC_OR_PARTITION)
         topic_name = req_topics_arr[0][1]  # COMPACT_NULLABLE_STRING
         topic_name_length = len(topic_name)  # Length of the topic name
