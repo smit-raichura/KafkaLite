@@ -20,13 +20,14 @@ class DescribeTopicPartitionsRequest(Request):
         index += client_id_len
         tag_buffer = request[index:index + 1]
         index += 1
+
         topics_array_len = int.from_bytes(request[index:index + 1])
         index += 1
         topics_arr = []
         for _ in range(topics_array_len - 1):
             topic_name_len = int.from_bytes(request[index:index + 1])
             index += 1
-            topic_name = request[index:index + topic_name_len].decode('utf-8')
+            topic_name = request[index:index + topic_name_len - 1].decode('utf-8')
             index += topic_name_len
             tag_buffer = request[index:index + 1]
             index += 1

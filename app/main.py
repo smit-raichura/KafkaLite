@@ -15,148 +15,149 @@ import threading
 # def api_versions_parseRequest(request):
 
 
-# def desribe_topic_partitons_parseRequest(request):
+def desribe_topic_partitons_parseRequest(request):
 
-#     print('----------------------- Parsing Request ----------------------')
-#     print(f'RAW_REQUEST : {request}')
+    print('----------------------- Parsing Request ----------------------')
+    print(f'RAW_REQUEST : {request}')
     
-#     msg_len_bytes = request [:4]
-#     msg_len = int.from_bytes(msg_len_bytes)
-# # --------------------- Request Header ----------------------------------------    
-#     api_key_bytes = request[4:6]
-#     api_key = int.from_bytes(api_key_bytes)
+    msg_len_bytes = request [:4]
+    msg_len = int.from_bytes(msg_len_bytes)
+# --------------------- Request Header ----------------------------------------    
+    api_key_bytes = request[4:6]
+    api_key = int.from_bytes(api_key_bytes)
 
-#     api_version_bytes = request[4:8]
-#     api_version = int.from_bytes(api_version_bytes)
+    api_version_bytes = request[4:8]
+    api_version = int.from_bytes(api_version_bytes)
 
-#     if api_key == 18 :
-#         header = {
-#         "msg_len" : msg_len,
-#         "api_key" : api_key,
-#         "api_version" : api_version,
-#         "correlation_id" : correlation_id
-#         }
-#         response_obj = {
-#             "header" : header
-#         }
-#         return response_obj
+    if api_key == 18 :
+        header = {
+        "msg_len" : msg_len,
+        "api_key" : api_key,
+        "api_version" : api_version,
+        "correlation_id" : correlation_id
+        }
+        response_obj = {
+            "header" : header
+        }
+        return response_obj
 
-#     correlation_id_bytes = request[8:12]
-#     correlation_id = int.from_bytes(correlation_id_bytes)
+    correlation_id_bytes = request[8:12]
+    correlation_id = int.from_bytes(correlation_id_bytes)
 
-#     client_id_string_len_bytes = request[12:14]
-#     client_id_string_len = int.from_bytes(client_id_string_len_bytes)
+    client_id_string_len_bytes = request[12:14]
+    client_id_string_len = int.from_bytes(client_id_string_len_bytes)
 
-#     clinet_id_bytes : bytes = request[14: 14 + client_id_string_len]
-#     client_id = clinet_id_bytes.decode('utf-8')
-#     index = 14 + client_id_string_len
+    clinet_id_bytes : bytes = request[14: 14 + client_id_string_len]
+    client_id = clinet_id_bytes.decode('utf-8')
+    index = 14 + client_id_string_len
     
-#     tag_buffer = b'\x00'
-#     tag_buffer = request[index:index + 1]
-#     index += 1
-# # --------------------- Request Header ----------------------------------------
+    tag_buffer = b'\x00'
+    tag_buffer = request[index:index + 1]
+    index += 1
+# --------------------- Request Header ----------------------------------------
 
-#     header = {
-#         "msg_len" : msg_len,
-#         "api_key" : api_key,
-#         "api_version" : api_version,
-#         "correlation_id" : correlation_id,
-#         "client_id" : client_id
-#     }
+    header = {
+        "msg_len" : msg_len,
+        "api_key" : api_key,
+        "api_version" : api_version,
+        "correlation_id" : correlation_id,
+        "client_id" : client_id
+    }
 
-#     print(f'REQUEST_HEADER : {header}')
+    print(f'REQUEST_HEADER : {header}')
 
-# # --------------------- Request Body ----------------------------------------
-#     topics_array_len_bytes = request[index : index + 1]
-#     topics_array_len = int.from_bytes(topics_array_len_bytes)
+# --------------------- Request Body ----------------------------------------
+    topics_array_len_bytes = request[index : index + 1]
+    topics_array_len = int.from_bytes(topics_array_len_bytes)
     
-#     index += 1
+    index += 1
 
-#     print(f'index : {index} topics_arr_len : {topics_array_len}')
+    print(f'index : {index} topics_arr_len : {topics_array_len}')
 
-#     topics_arr = []
-#     for i in range(topics_array_len-1):
-#         topic_name_str_len_bytes =  request[index: index + 1]
-#         topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
-#         index += 1
+    topics_arr = []
+    for i in range(topics_array_len-1):
+        topic_name_str_len_bytes =  request[index: index + 1]
+        topic_name_str_len = int.from_bytes(topic_name_str_len_bytes)
+        index += 1
 
-#         topic_name_bytes : bytes = request[index : index + topic_name_str_len - 1]
-#         topic_name = topic_name_bytes.decode('utf-8')
-#         index += topic_name_str_len 
+        topic_name_bytes : bytes = request[index : index + topic_name_str_len - 1]
+        topic_name = topic_name_bytes.decode('utf-8')
+        index += topic_name_str_len 
 
-#         tag_buffer
-#         index += 1
+        tag_buffer
+        index += 1
 
-#         print(f'topics_arr : {i} : {(topic_name_str_len, topic_name, tag_buffer)}')
-#         topics_arr.append((topic_name_str_len, topic_name, tag_buffer))
+        print(f'topics_arr : {i} : {(topic_name_str_len, topic_name, tag_buffer)}')
+        topics_arr.append((topic_name_str_len, topic_name, tag_buffer))
 
-#     print(f'topics_arr : {topics_arr}')
+    print(f'topics_arr : {topics_arr}')
 
-#     response_partition_limit_bytes = request[index: index + 4]
-#     response_partition_limit = int.from_bytes(response_partition_limit_bytes)
-#     index += 4
+    response_partition_limit_bytes = request[index: index + 4]
+    response_partition_limit = int.from_bytes(response_partition_limit_bytes)
+    index += 4
 
-#     cursor_bytes = b'\xff'
-#     index += 1
+    cursor_bytes = b'\xff'
+    index += 1
 
-#     tag_buffer
-#     index += 1
+    tag_buffer
+    index += 1
 
-# # --------------------- Request Body ----------------------------------------
-#     body = {
-#         "topics_arr" : topics_arr,
-#         "response_partition_limit" : response_partition_limit,
-#         "cursor_bytes" : cursor_bytes
-#     }
-#     print(f'REQUEST_BODY : {body}')
+# --------------------- Request Body ----------------------------------------
+    body = {
+        "topics_arr" : topics_arr,
+        "response_partition_limit" : response_partition_limit,
+        "cursor_bytes" : cursor_bytes
+    }
+    print(f'REQUEST_BODY : {body}')
 
-#     request_obj = {
-#         "header" : header,
-#         "body" : body
-#     }
-#     print('----------------------- Parsing Request ----------------------')
+    request_obj = {
+        "header" : header,
+        "body" : body
+    }
+    print('----------------------- Parsing Request ----------------------')
 
-#     return request_obj
-# '''
-#  DescribeTopicPartitions (v0) request:
+    return request_obj
+'''
+ DescribeTopicPartitions (v0) request:
 
-#  message_length_bytes : 4 endian int
-# ----------- Header -----------  
-#  api_key : 2 int
-#  api_version : 2 int
-#  correlation_id : 4 int
-#  client_id_len : 4 int
-#  client_id_content : client_id_len
-#  tag_buffer : 1 
-# ----------- Header ----------- 
-# ----------- Body ----------- 
-#  topic_array_len : 2 int
-#     topic_name_len : 2 int
-#     topic_name : topic_name_len str(utf-8)
-#     tag_buffer : 1
-#  response_partition_limit : 4 int
-#  cursor : 1 nullable; default: b'\xff'
-#  tag_buffer : 1
+ message_length_bytes : 4 endian int
+----------- Header -----------  
+ api_key : 2 int
+ api_version : 2 int
+ correlation_id : 4 int
+ client_id_len : 4 int
+ client_id_content : client_id_len
+ tag_buffer : 1 
+----------- Header ----------- 
+----------- Body ----------- 
+ topic_array_len : 2 int
+    topic_name_len : 2 int
+    topic_name : topic_name_len str(utf-8)
+    tag_buffer : 1
+ response_partition_limit : 4 int
+ cursor : 1 nullable; default: b'\xff'
+ tag_buffer : 1
 
-# DescribeTopicPartitions Request (Version: 0) => [topics] response_partition_limit cursor TAG_BUFFER 
-#   topics => name TAG_BUFFER 
-#     name => COMPACT_STRING
-#   response_partition_limit => INT32
-#   cursor => topic_name partition_index TAG_BUFFER 
-#     topic_name => COMPACT_STRING
-#     partition_index => INT32
+DescribeTopicPartitions Request (Version: 0) => [topics] response_partition_limit cursor TAG_BUFFER 
+  topics => name TAG_BUFFER 
+    name => COMPACT_STRING
+  response_partition_limit => INT32
+  cursor => topic_name partition_index TAG_BUFFER 
+    topic_name => COMPACT_STRING
+    partition_index => INT32
 
 
-# The tester will validate that:
+The tester will validate that:
 
-# The first 4 bytes of your response (the "message length") are valid.
-# The correlation ID in the response header matches the correlation ID in the request header.
-# The error code in the response body is 3 (UNKNOWN_TOPIC_OR_PARTITION).
-# The response body should be valid DescribeTopicPartitions (v0) Response.
-# The topic_name field in the response should be equal to the topic name sent in the request.
-# The topic_id field in the response should be equal to 00000000-0000-0000-0000-000000000000.
-# The partitions field in the response should be empty. (As there are no partitions assigned to this non-existent topic.)
-# '''
+The first 4 bytes of your response (the "message length") are valid.
+The correlation ID in the response header matches the correlation ID in the request header.
+The error code in the response body is 3 (UNKNOWN_TOPIC_OR_PARTITION).
+The response body should be valid DescribeTopicPartitions (v0) Response.
+The topic_name field in the response should be equal to the topic name sent in the request.
+The topic_id field in the response should be equal to 00000000-0000-0000-0000-000000000000.
+The partitions field in the response should be empty. (As there are no partitions assigned to this non-existent topic.)
+'''
+
 def make_response_describeTopicPartitions(request_obj):
     '''
     messg_len : 4 int 
