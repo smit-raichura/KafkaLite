@@ -26,7 +26,7 @@ def desribe_topic_partitons_parseRequest(request):
     api_key_bytes = request[4:6]
     api_key = int.from_bytes(api_key_bytes)
 
-    api_version_bytes = request[4:8]
+    api_version_bytes = request[6:8]
     api_version = int.from_bytes(api_version_bytes)
 
     if api_key == 18 :
