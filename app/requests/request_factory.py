@@ -23,7 +23,7 @@ class RequestFactory:
             case ApiKey.DESCRIBE_TOPIC_PARTITIONS:
                 request_class = DescribeTopicPartitionsRequest
         request_body = request_class.decode_body(request_buffer)
-        return request_class(request_header=request_header, **request_body)
+        return request_class(request_header, **request_body)
         # return request_class(request_header, **request_class.decode_body(request_buffer))
     
  
