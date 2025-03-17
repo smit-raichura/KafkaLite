@@ -24,7 +24,7 @@ class DescribeTopicPartitionsRequestTopic:
         item = DescribeTopicPartitionsRequestTopic(
             name = decode_compact_string(buffer)
         )
-        decode_tagged_fields()
+        decode_tagged_fields(buffer)
         return item
         
 
