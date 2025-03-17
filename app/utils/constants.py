@@ -1,5 +1,5 @@
 from enum import unique, IntEnum
-from .converter import read_int, write_int
+from .converter import decode_int16, encode_int16
 from typing import BinaryIO
 @unique #this decorator ensures each enum has a unique value
 class ErrorCode(IntEnum):
@@ -9,10 +9,11 @@ class ErrorCode(IntEnum):
 
     @classmethod
     def decode(cls, buffer: BinaryIO):
-        return ErrorCode(read_int(buffer= buffer, size= 2))
+        return ErrorCode(decode_int16(buffer))
 
     def encode(self):
-        return write_int(buffer= self, size= 2)
+        return encode_int16(self)
+    
 
 @unique
 class ApiKey(IntEnum):
@@ -20,7 +21,7 @@ class ApiKey(IntEnum):
     DESCRIBE_TOPIC_PARTITIONS = 75
      
     def decode(cls, buffer: BinaryIO):
-        return ApiKey(read_int(buffer= buffer, size= 2))
+        return ApiKey(decode_int16(buffer))
 
     def encode(self):
-        return write_int(buffer= self, size= 2)
+        return encode_int16(self)
