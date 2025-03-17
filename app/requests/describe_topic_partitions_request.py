@@ -65,7 +65,7 @@ class DescribeTopicPartitionsRequest(AbstractRequest):
     def decode_body(cls, request_buffer: BinaryIO):
 
         request_body = {
-            "topics":  decode_compact_array(request_buffer, DescribeTopicPartitionsRequestTopic.decode),
+            "topics":  decode_compact_array(request_buffer, DescribeTopicPartitionsRequestTopic.decode)[0],
             "response_partition_limit": decode_int32(request_buffer),
             "cursor": DescribeTopicPartitionsCursor.decode(request_buffer),
         }
