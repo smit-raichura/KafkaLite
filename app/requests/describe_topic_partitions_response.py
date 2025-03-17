@@ -58,7 +58,7 @@ class DescribeTopicPartitionsResponseTopic:
     # Use `field(default_factory=list)` to ensure each instance gets its own independent list,
     # avoiding shared mutable defaults that can lead to unintended side effects.
     partitions : list[DescribeTopicPartitionsResponsePartition] = field(default_factory=list) 
-    topic_authorized_operations : int
+    topic_authorized_operations : int = 248
 
     @classmethod
     def form_topic(cls, topic_name: str):
