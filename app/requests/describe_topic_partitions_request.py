@@ -53,7 +53,7 @@ class DescribeTopicPartitionsCursor:
             encode_int32(self.partition_index),
             encode_tagged_fields(),
         ])
-
+@dataclass
 class DescribeTopicPartitionsRequest(AbstractRequest):
     """Request class for Describe Topic Partitions."""
     
