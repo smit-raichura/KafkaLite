@@ -30,9 +30,9 @@ class ApiVersionsResponseApiKey:
 
 @dataclass
 class ApiVersionsResponse(AbstractResponse):
-    error_code: ErrorCode
+    error_code: ErrorCode = ErrorCode.NO_ERROR
     api_keys: list[ApiVersionsResponseApiKey] = field(default_factory=list)
-    throttle_time: int
+    throttle_time: int = 0
     
     @classmethod
     def make_body_kwargs(cls, request: ApiVersionsRequest):
