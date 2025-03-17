@@ -25,7 +25,7 @@ class DescribeTopicPartitionsResponsePartition:
     error_code : ErrorCode
     partition_index : int = 0
     leader_id : int = 0
-    leader_epoch: int
+    leader_epoch: int = 0
     replica_nodes: list[int] = field(default_factory=list) 
     isr_nodes : list[int] = field(default_factory=list)
     eligible_leader_replicas : list[int] = field(default_factory=list)
