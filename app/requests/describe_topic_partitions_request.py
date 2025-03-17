@@ -57,7 +57,8 @@ class DescribeTopicPartitionsCursor:
 class DescribeTopicPartitionsRequest(AbstractRequest):
     """Request class for Describe Topic Partitions."""
     
-    topics: list[DescribeTopicPartitionsRequestTopic] = field(default_factory=list)
+    # topics: list[DescribeTopicPartitionsRequestTopic] = field(default_factory=list)
+    topics: DescribeTopicPartitionsRequestTopic
     response_partition_limit: int = 0
     cursor: DescribeTopicPartitionsCursor | None = None
 
