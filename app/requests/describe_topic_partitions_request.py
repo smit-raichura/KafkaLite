@@ -69,5 +69,5 @@ class DescribeTopicPartitionsRequest(AbstractRequest):
             "response_partition_limit": decode_int32(request_buffer),
             "cursor": DescribeTopicPartitionsCursor.decode(request_buffer),
         }
-        decode_tagged_fields()
+        decode_tagged_fields(request_buffer)
         return request_body
