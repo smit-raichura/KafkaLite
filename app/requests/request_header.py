@@ -19,7 +19,7 @@ class RequestHeader:
     @classmethod
     def decode(cls, buffer: BinaryIO):
         request_header = RequestHeader(
-            api_key=ApiKey.decode(buffer= buffer),
+            api_key=ApiKey.decode(buffer),
             api_version=decode_int16(buffer),
             correlation_id=decode_int32(buffer),
             client_id=decode_nullable_string(buffer),

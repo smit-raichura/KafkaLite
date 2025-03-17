@@ -20,6 +20,7 @@ class ApiKey(IntEnum):
     API_VERSIONS = 18
     DESCRIBE_TOPIC_PARTITIONS = 75
      
+    @classmethod
     def decode(cls, buffer: BinaryIO):
         return ApiKey(decode_int16(buffer))
 
