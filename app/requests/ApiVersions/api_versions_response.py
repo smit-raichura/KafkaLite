@@ -3,10 +3,10 @@ from typing import  Dict, Any
 from dataclasses import dataclass, field
 from io import BytesIO
 
-from .abstract_response import AbstractResponse
-from ..utils.constants import ErrorCode, ApiKey
+from ..abstract_response import AbstractResponse
+from ...utils.constants import ErrorCode, ApiKey
 from .api_versions_request import ApiVersionsRequest
-from ..utils.converter import(
+from ...utils.converter import(
     encode_compact_array,
     encode_int16,
     encode_int32,
