@@ -18,7 +18,7 @@ class AbstractResponse(ABC):
 
     def encode(self):
         encoded_response = self.header.encode() + self._encode_body()
-        print(f'Encoded Response  ::  { encode_int32(len(encoded_response)) + encoded_response}')
+        print(f'Encoded Response  ::  { self._encode_body()}')
         return encode_int32(len(encoded_response)) + encoded_response
 
     @abstractmethod
