@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from ..utils.converter import encode_int32
 from .response_header import ResponseHeader
 
+@dataclass
 class AbstractResponse(ABC):
     '''
         Abstract base class for all response types

@@ -4,6 +4,7 @@ from typing import Any, Dict, BinaryIO
 
 from .request_header import RequestHeader
 
+@dataclass
 class AbstractRequest(ABC):
     '''
         Abstract base class for all request types.
