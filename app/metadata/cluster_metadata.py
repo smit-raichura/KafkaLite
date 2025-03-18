@@ -43,13 +43,13 @@ class ClusterMetadata(SingletonMetaData):
                 self._add_record(record)
 
     def get_topic_id(self, topic_name: str):
-        return self._topic_id_lookup[topic_name]
+        return self._topic_id_lookup[topic_name] if topic_name in self._topic_id_lookup else None
 
     def get_topic_name(self, topic_id: UUID):
-        return self._topic_name_lookup[topic_id]
+        return self._topic_name_lookup[topic_id] if topic_id in self._topic_name_lookup else None
     
     def get_partition_indices(self, topic_id: UUID):
-        return self._partition_indices_lookup[topic_id]
+        return self._partition_indices_lookup[topic_id] if topic_id in self._partition_indices_lookup else None
     
     def _add_record(self, record: Record):
         
