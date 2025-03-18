@@ -91,7 +91,7 @@ class DescribeTopicPartitionsResponseTopic:
     def encode(self):
         topic_buffer = BytesIO()
         topic_buffer.write(self.error_code.encode())
-        topic_buffer.write(encode_compact_nullable_string(self.name))
+        topic_buffer.write(encode_compact_nullable_string(self.topic_name))
         topic_buffer.write(encode_uuid(self.topic_id))
         topic_buffer.write(encode_boolean(self.is_internal))
         topic_buffer.write(encode_compact_array(self.partitions))
