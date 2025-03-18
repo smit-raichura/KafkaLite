@@ -51,7 +51,6 @@ class ApiVersionsResponse(AbstractResponse):
             "throttle_time": 0,
         }
  
-
     def _encode_body(self):
         body_buffer = BytesIO()
         body_buffer.write(self.error_code.encode())
