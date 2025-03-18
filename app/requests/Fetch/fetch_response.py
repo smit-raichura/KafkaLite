@@ -70,7 +70,7 @@ class FetchResponseTopic:
         cluster_metadata = ClusterMetadata()
         topic_name = cluster_metadata.get_topic_name(request_topic.topic_id)
         if topic_name is None:
-            return FetchRequestTopic(
+            return FetchResponseTopic(
                 topic_id= request_topic.topic_id,
                 partitions=[
                     FetchResponsePartition(
@@ -81,7 +81,7 @@ class FetchResponseTopic:
                 ]
             )
 
-        return FetchRequestTopic(
+        return FetchResponseTopic(
                 topic_id= request_topic.topic_id,
                 partitions=[
                     FetchResponsePartition(
@@ -117,7 +117,7 @@ class FetchResponse(AbstractResponse):
             "throttle_time": 0,
             "error_code": ErrorCode.NO_ERROR,
             "session_id": 0,
-            "responses": [ FetchResponseTopic.from_topic(topic) for topic in request.topics]
+            "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
         }
     
     def _encode_body(self):
