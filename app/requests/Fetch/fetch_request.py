@@ -5,6 +5,7 @@ from uuid import UUID
 from ..abstract_request import AbstractRequest
 from ...utils.converter import(
     decode_compact_array,
+    decode_compact_string,
     decode_int64, 
     decode_int8,
     decode_int32, 
@@ -90,7 +91,7 @@ class FetchRequest(AbstractRequest):
             "session_epoch": decode_int32(request_buffer),
             "topics": decode_compact_array(request_buffer, FetchRequestTopic.decode),
             "forgotten_topics_data": decode_compact_array(request_buffer, FetchRequestForgottenTopicData.decode),
-            "rack_id": decode_compact_array(request_buffer)
+            "rack_id": decode_compact_string(request_buffer)
         }
         decode_tagged_fields(request_buffer)
         return request_body
