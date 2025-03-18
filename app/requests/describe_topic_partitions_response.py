@@ -113,6 +113,7 @@ class DescribeTopicPartitionsResponse(AbstractResponse):
     next_cursor : DescribeTopicPartitionsCursor | None
 
 
+
     @classmethod
     def make_body_kwargs(cls, request: DescribeTopicPartitionsRequest):
         print(f'request : {request}')
