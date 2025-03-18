@@ -63,7 +63,7 @@ class FetchResponsePartition:
 @dataclass
 class FetchResponseTopic:
     topic_id: UUID
-    partitons: list[FetchResponsePartition]
+    partitions: list[FetchResponsePartition]
 
     @classmethod
     def from_topic(cls, request_topic: FetchRequestTopic):
