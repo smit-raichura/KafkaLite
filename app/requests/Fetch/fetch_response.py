@@ -77,7 +77,6 @@ class FetchResponseTopic:
                         partition_index= 0,
                         error_code=  ErrorCode.UNKNOWN_TOPIC_ID
                     )
-                   for partition in request_topic.partitions
                 ]
             )
 
