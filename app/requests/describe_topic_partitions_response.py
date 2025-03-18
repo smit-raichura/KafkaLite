@@ -115,6 +115,7 @@ class DescribeTopicPartitionsResponse(AbstractResponse):
 
     @classmethod
     def make_body_kwargs(cls, request: DescribeTopicPartitionsRequest):
+        print(f'request : {request}')
         return {
             "throttle_time": 0,
             "topics": [DescribeTopicPartitionsResponseTopic.form_topic(topic.topic_name) for topic in request.topics],

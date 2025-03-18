@@ -22,8 +22,8 @@ class RequestFactory:
                 request_class = ApiVersionsRequest
             case ApiKey.DESCRIBE_TOPIC_PARTITIONS:
                 request_class = DescribeTopicPartitionsRequest
-        request_body = request_class.decode_body(request_buffer)
-        print(f'request_header : {request_header} \n request_body : {request_body}' )
+        # request_body = request_class.decode_body(request_buffer)
+        # print(f'request_header : {request_header} \n request_body : {request_body}' )
         # return request_class(**request_body)
         return request_class(request_header, **request_class.decode_body(request_buffer))
     

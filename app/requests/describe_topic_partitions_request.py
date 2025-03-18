@@ -36,9 +36,8 @@ class DescribeTopicPartitionsCursor:
 
     @classmethod
     def decode(cls, buffer: BinaryIO):
-        c = buffer.read(1)
-        print(f'cursor buffer : {c} ')
-        if c == b"\xff":
+         
+        if buffer.read(1) == b"\xff":
             return None
         buffer.seek(-1, io.SEEK_CUR)
 
@@ -72,5 +71,5 @@ class DescribeTopicPartitionsRequest(AbstractRequest):
             "cursor": DescribeTopicPartitionsCursor.decode(request_buffer),
         }
         decode_tagged_fields(request_buffer)
-        print(f'request_body[topics] : {request_body["topics"]}' )
+        # print(f'request_body[topics] : {request_body["topics"]}' )
         return request_body
