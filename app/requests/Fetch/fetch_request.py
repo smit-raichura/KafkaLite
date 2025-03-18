@@ -80,6 +80,7 @@ class FetchRequest(AbstractRequest):
     forgotten_topics_data: list[FetchRequestForgottenTopicData]
     rack_id: str # compact str
 
+
     @classmethod
     def decode_body(cls, request_buffer: BinaryIO):
         request_body = {
