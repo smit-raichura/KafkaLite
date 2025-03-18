@@ -36,7 +36,9 @@ class DescribeTopicPartitionsCursor:
 
     @classmethod
     def decode(cls, buffer: BinaryIO):
-        if buffer.read(1) == b"\xff":
+        c = buffer.read(1)
+        print('cursor buffer : {c} ')
+        if c == b"\xff":
             return None
         buffer.seek(-1, io.SEEK_CUR)
 
