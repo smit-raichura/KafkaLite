@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from ..utils.converter import encode_int32
-from .response_header import ResponseHeader
+from .Headers.response_header import ResponseHeader
 
 @dataclass
 class AbstractResponse(ABC):

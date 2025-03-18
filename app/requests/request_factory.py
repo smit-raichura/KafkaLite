@@ -1,13 +1,14 @@
 from dataclasses import dataclass
 from typing import BinaryIO
 from ..utils.constants import ApiKey
-from .request_header import RequestHeader
+from .Headers.request_header import RequestHeader
 from .abstract_request import AbstractRequest
-from .api_versions_request import ApiVersionsRequest
-from .describe_topic_partitions_request import DescribeTopicPartitionsRequest
+from .ApiVersions.api_versions_request import ApiVersionsRequest
+from .DescribeTopicPartitions.describe_topic_partitions_request import DescribeTopicPartitionsRequest
 from ..utils.converter import (
     decode_int32
 )
+
 
 class RequestFactory:
     """Factory to create request objects based on API key."""

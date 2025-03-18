@@ -3,8 +3,8 @@ from typing import BinaryIO
 from dataclasses import dataclass, field 
 import io
 
-from .abstract_request import AbstractRequest
-from ..utils.converter import (
+from ..abstract_request import AbstractRequest
+from ...utils.converter import (
     decode_compact_array, 
     decode_int32, 
     decode_tagged_fields,

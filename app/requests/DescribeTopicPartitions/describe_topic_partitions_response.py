@@ -3,13 +3,13 @@ from dataclasses import dataclass, field
 from uuid import UUID
 from io import BytesIO
 
-from .abstract_response import AbstractResponse
-from ..utils.constants import ErrorCode, ApiKey
+from ..abstract_response import AbstractResponse
+from ...utils.constants import ErrorCode, ApiKey
 from .describe_topic_partitions_request import DescribeTopicPartitionsCursor
-from ..metadata.cluster_metadata import ClusterMetadata
+from ...metadata.cluster_metadata import ClusterMetadata
 from .describe_topic_partitions_request import DescribeTopicPartitionsRequest
 
-from ..utils.converter import (
+from ...utils.converter import (
     encode_boolean,
     encode_compact_array,
     encode_compact_nullable_string,

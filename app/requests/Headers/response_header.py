@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from ..utils.constants import ApiKey
-from ..utils.converter import encode_int32, encode_tagged_fields
+from ...utils.constants import ApiKey
+from ...utils.converter import encode_int32, encode_tagged_fields
 
 from .request_header import RequestHeader
 

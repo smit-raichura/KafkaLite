@@ -1,9 +1,9 @@
 from typing import BinaryIO, List, Tuple, Dict, Any
 from dataclasses import dataclass
 
-from .abstract_request import AbstractRequest
-from ..utils.constants import ErrorCode, ApiKey
-from ..utils.converter import(
+from ..abstract_request import AbstractRequest
+from ...utils.constants import ErrorCode, ApiKey
+from ...utils.converter import(
     decode_compact_string,
     decode_tagged_fields,
     encode_compact_string

@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from ..utils.constants import ApiKey
 from .abstract_response import AbstractResponse
-from .response_header import ResponseHeader
+from .Headers.response_header import ResponseHeader
 from typing import Dict, Any
-from .api_versions_response import ApiVersionsResponse
-from .describe_topic_partitions_response import DescribeTopicPartitionsResponse
+from .ApiVersions.api_versions_response import ApiVersionsResponse
+from .DescribeTopicPartitions.describe_topic_partitions_response import DescribeTopicPartitionsResponse
 
 class ResponseFactory:
     """Factory to create response objects based on request type."""

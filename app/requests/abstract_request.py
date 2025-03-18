@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, BinaryIO
 
-from .request_header import RequestHeader
+from .Headers.request_header import RequestHeader
 
 @dataclass
 class AbstractRequest(ABC):
