@@ -42,6 +42,7 @@ def decode_int64(binary_stream: BinaryIO):
     return int.from_bytes(binary_stream.read(8), signed=True)
 
 
+
 def encode_int64(integer: int):
     return integer.to_bytes(8, signed=True)
 
