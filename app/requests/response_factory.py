@@ -5,7 +5,7 @@ from .Headers.response_header import ResponseHeader
 from typing import Dict, Any
 from .ApiVersions.api_versions_response import ApiVersionsResponse
 from .DescribeTopicPartitions.describe_topic_partitions_response import DescribeTopicPartitionsResponse
-
+from .Fetch.fetch_response import FetchResponse
 class ResponseFactory:
     """Factory to create response objects based on request type."""
     @staticmethod
@@ -18,5 +18,7 @@ class ResponseFactory:
                 response_class = ApiVersionsResponse
             case ApiKey.DESCRIBE_TOPIC_PARTITIONS:
                 response_class = DescribeTopicPartitionsResponse
+            case ApiKey.FETCH:
+                response_class = FetchResponse
         
         return response_class(response_header, **response_class.make_body_kwargs(request))

@@ -13,7 +13,7 @@ class AbstractRequest(ABC):
 
     @classmethod
     @abstractmethod
-    def decode_body(cls, request_buffer : BinaryIO) -> Dict[str, Any]:
+    def decode_body(cls, request_buffer : BinaryIO):
         return NotImplementedError
     
     

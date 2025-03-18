@@ -6,6 +6,7 @@ class ErrorCode(IntEnum):
     NO_ERROR = 0
     UNKNOWN_TOPIC_OR_PARTITION = 3
     UNSUPPORTED_VERSION = 35
+    UNKNOWN_TOPIC_ID = 100
 
     @classmethod
     def decode(cls, buffer: BinaryIO):
