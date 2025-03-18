@@ -117,7 +117,7 @@ class FetchResponse(AbstractResponse):
             "session_id": 0,
             "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
         }
-        print(f'Fetch Resp Body  :: \n {body_dict} \n Fetch Header :: \n {cls.header}')
+        print(f'Fetch Resp Body  :: \n {body_dict} ')
         return body_dict 
     
     def _encode_body(self):
