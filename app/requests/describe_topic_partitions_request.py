@@ -58,14 +58,14 @@ class DescribeTopicPartitionsRequest(AbstractRequest):
     """Request class for Describe Topic Partitions."""
     
     topics: list[DescribeTopicPartitionsRequestTopic] = field(default_factory=list)
-    response_partition_limit: int = 0
-    cursor: DescribeTopicPartitionsCursor | None = None
+    response_partition_limit: int 
+    cursor: DescribeTopicPartitionsCursor | None 
 
     @classmethod
     def decode_body(cls, request_buffer: BinaryIO):
 
         request_body = {
-            "topics": decode_compact_array(request_buffer, DescribeTopicPartitionsRequestTopic.decode)[0],
+            "topics": decode_compact_array(request_buffer, DescribeTopicPartitionsRequestTopic.decode),
             "response_partition_limit": decode_int32(request_buffer),
             "cursor": DescribeTopicPartitionsCursor.decode(request_buffer),
         }
