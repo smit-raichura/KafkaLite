@@ -105,7 +105,7 @@ class FetchResponseTopic:
 @dataclass
 class FetchResponse(AbstractResponse):
 
-    throttle_time: int = 0# 32 
+    throttle_time: int # 32 
     error_code: ErrorCode
     session_id: int # 32
     responses: list[FetchResponseTopic]
