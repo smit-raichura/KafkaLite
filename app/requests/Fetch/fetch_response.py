@@ -96,7 +96,7 @@ class FetchResponseTopic:
         topic_buffer = BytesIO()
 
         topic_buffer.write(encode_uuid(self.topic_id))
-        topic_buffer.write(encode_compact_array(self.partitons))
+        topic_buffer.write(encode_compact_array(self.partitions))
         topic_buffer.write(encode_tagged_fields())
 
         return topic_buffer.getvalue()
