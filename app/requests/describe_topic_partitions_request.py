@@ -61,7 +61,7 @@ class DescribeTopicPartitionsRequest(AbstractRequest):
     
     topics: list[DescribeTopicPartitionsRequestTopic] 
     response_partition_limit: int 
-    cursor: DescribeTopicPartitionsCursor | None 
+    cursor: DescribeTopicPartitionsCursor | None = None
 
     @classmethod
     def decode_body(cls, request_buffer: BinaryIO):
@@ -69,7 +69,7 @@ class DescribeTopicPartitionsRequest(AbstractRequest):
         request_body = {
             "topics": decode_compact_array(request_buffer, DescribeTopicPartitionsRequestTopic.decode),
             "response_partition_limit": decode_int32(request_buffer),
-            "cursor": DescribeTopicPartitionsCursor.decode(request_buffer),
+            "cursor": None,#DescribeTopicPartitionsCursor.decode(request_buffer)
         }
         decode_tagged_fields(request_buffer)
         print(f'request_body[topics] : {request_body["topics"]}' )
