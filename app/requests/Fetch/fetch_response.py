@@ -111,13 +111,14 @@ class FetchResponse(AbstractResponse):
 
     @classmethod
     def make_body_kwargs(cls, request: FetchRequest):
-        
-        return {
+        body_dict = {
             "throttle_time": 0,
             "error_code": ErrorCode.NO_ERROR,
             "session_id": 0,
             "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
         }
+        print(f'Fetch Resp Body  :: \n {body_dict} \n Fetch Header :: \n {cls.header}')
+        return body_dict 
     
     def _encode_body(self):
 

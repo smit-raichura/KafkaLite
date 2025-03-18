@@ -21,4 +21,5 @@ class ResponseFactory:
             case ApiKey.FETCH:
                 response_class = FetchResponse
         
+        
         return response_class(response_header, **response_class.make_body_kwargs(request))
