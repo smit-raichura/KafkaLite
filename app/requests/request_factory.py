@@ -24,7 +24,7 @@ class RequestFactory:
                 request_class = DescribeTopicPartitionsRequest
         request_body = request_class.decode_body(request_buffer)
         print(f'request_body : {request_body}' )
-        return request_class(request_header, **request_body)
+        return request_class(**request_body)
         # return request_class(request_header, **request_class.decode_body(request_buffer))
     
  
