@@ -47,7 +47,7 @@ class ApiVersionsResponse(AbstractResponse):
                 ApiVersionsResponseApiKey(api_key= ApiKey.API_VERSIONS, min_version=0, max_version=4),
                 ApiVersionsResponseApiKey(api_key= ApiKey.DESCRIBE_TOPIC_PARTITIONS, min_version=0, max_version=0),
             ],
-            "throttle_time_ms": 0,
+            "throttle_time": 0,
         }
  
 
