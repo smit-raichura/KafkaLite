@@ -19,6 +19,7 @@ class ErrorCode(IntEnum):
 class ApiKey(IntEnum):
     API_VERSIONS = 18
     DESCRIBE_TOPIC_PARTITIONS = 75
+    FETCH = 1
      
     @classmethod
     def decode(cls, buffer: BinaryIO):

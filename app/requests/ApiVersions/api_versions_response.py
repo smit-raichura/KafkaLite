@@ -46,6 +46,7 @@ class ApiVersionsResponse(AbstractResponse):
             "api_keys": [
                 ApiVersionsResponseApiKey(api_key= ApiKey.API_VERSIONS, min_version=0, max_version=4),
                 ApiVersionsResponseApiKey(api_key= ApiKey.DESCRIBE_TOPIC_PARTITIONS, min_version=0, max_version=0),
+                ApiVersionsResponseApiKey(api_key= ApiKey.FETCH, min_version=0, max_version=16),
             ],
             "throttle_time": 0,
         }
