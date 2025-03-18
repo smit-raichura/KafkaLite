@@ -44,7 +44,7 @@ class DescribeTopicPartitionsResponsePartition:
         partition_buffer.write(encode_compact_array(self.eligible_leader_replicas, encode_int32)),
         partition_buffer.write(encode_compact_array(self.last_known_elr, encode_int32)),
         partition_buffer.write(encode_compact_array(self.offline_replicas, encode_int32)),
-        partition_buffer.write(encode_tagged_fields)
+        partition_buffer.write(encode_tagged_fields())
 
         return partition_buffer.getvalue()
 
