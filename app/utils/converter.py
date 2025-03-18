@@ -217,8 +217,6 @@ def encode_compact_array(array: list | None, encode_function: EncodeFunction | N
 
 
 def decode_tagged_fields(binary_stream: BinaryIO):
-    # binary_stream.read(1)
-    # return
     assert binary_stream.read(1) == b"\x00", "Unexpected tagged fields."
 
 
