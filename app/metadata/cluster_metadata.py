@@ -79,7 +79,7 @@ class ClusterMetadata(SingletonMetaData):
                 self._partition_indices_lookup[topic_id].append(partition_index)
 
 def read_record_batches(topic_name: str, partition_index: int):
-    print(f'topic_name : {topic_name}  ----  partition_index : {partition_index}')
+    # print(f'topic_name : {topic_name}  ----  partition_index : {partition_index}')
     filepath = f'/tmp/kraft-combined-logs/{topic_name}-{partition_index}/00000000000000000000.log'
     with open(filepath, mode = 'rb') as file_buffer:
         while file_buffer.peek():
