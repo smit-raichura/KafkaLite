@@ -52,7 +52,7 @@ class FetchResponsePartition:
         partition_buffer.write(encode_int64(self.last_stable_offset))
         partition_buffer.write(encode_int64(self.log_start_offset))
         partition_buffer.write(encode_compact_array(self.aborted_transactions))
-        partition_buffer.write(encode_int64(self.preferred_read_replica))
+        partition_buffer.write(encode_int32(self.preferred_read_replica))
         partition_buffer.write(encode_compact_array(self.records))
         partition_buffer.write(encode_tagged_fields())
 
