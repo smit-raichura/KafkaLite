@@ -68,6 +68,7 @@ class FetchResponseTopic:
     @classmethod
     def from_topic(cls, request_topic: FetchRequestTopic):
         cluster_metadata = ClusterMetadata()
+        print(f"cluster_metadata = {cluster_metadata}")
         topic_name = cluster_metadata.get_topic_name(request_topic.topic_id)
         if topic_name is None:
             print('No topic found')
