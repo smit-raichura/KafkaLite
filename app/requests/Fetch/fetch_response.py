@@ -118,8 +118,7 @@ class FetchResponse(AbstractResponse):
             "error_code": ErrorCode.NO_ERROR,
             "session_id": 0,
             "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
-        }
-        
+        }     
         return body_dict 
     
     def _encode_body(self):
