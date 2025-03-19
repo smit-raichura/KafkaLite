@@ -42,6 +42,9 @@ class ClusterMetadata(SingletonMetaData):
             for record in record_batch.records:
                 self._add_record(record)
 
+    def __repr__(self):
+        return f"id_lookup : {self._topic_id_lookup} \n name_lookup : {self._topic_name_lookup} \n partition_lookup : {self._partition_indices_lookup}"
+
     def get_topic_id(self, topic_name: str):
         return self._topic_id_lookup[topic_name] if topic_name in self._topic_id_lookup else None
 
