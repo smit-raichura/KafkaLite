@@ -69,7 +69,7 @@ class ClusterMetadata(SingletonMetaData):
                 topic_id = decode_uuid(value_buffer)
 
                 self._topic_id_lookup[topic_name] = topic_id
-                self._topic_id_lookup[topic_id] = topic_name
+                self._topic_name_lookup[topic_id] = topic_name
 
             case RecordType.PARTITION:
                 decode_int8(value_buffer) # parse version ref: https://binspec.org/kafka-cluster-metadata?highlight=69-69
