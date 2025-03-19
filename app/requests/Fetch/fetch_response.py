@@ -76,7 +76,7 @@ class FetchResponseTopic:
                 partitions=[
                     FetchResponsePartition(
                         partition_index= 0,
-                        error_code=  ErrorCode.NO_ERROR,
+                        error_code=  ErrorCode.UNKNOWN_TOPIC_ID,
                     )
                 ]
             )
