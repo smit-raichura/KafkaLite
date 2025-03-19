@@ -115,7 +115,7 @@ class FetchResponse(AbstractResponse):
     def make_body_kwargs(cls, request: FetchRequest):
         body_dict = {
             "throttle_time": 0,
-            "error_code": ErrorCode.NO_ERROR,
+            "error_code": ErrorCode,
             "session_id": 0,
             "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
         }
