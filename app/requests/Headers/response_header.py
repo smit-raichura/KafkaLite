@@ -19,6 +19,7 @@ class ResponseHeader:
         )
 
     def encode(self):
+        print(f'ResponseHeader :: {self}')
         if self.api_key is ApiKey.API_VERSIONS:
             return encode_int32(self.correlation_id)
         return encode_int32(self.correlation_id) + encode_tagged_fields()

@@ -21,7 +21,7 @@ class FetchResponseAbortedTransaction:
     first_offset: int # 64
 
     def encode(self):
-
+        print(f'FetchResponseAbortedTransaction :: {self}')
         transaction_buffer = BytesIO()
 
         transaction_buffer.write(encode_int64(self.producer_id))
@@ -43,7 +43,7 @@ class FetchResponsePartition:
     records: list[RecordBatch] = field(default_factory=list)
 
     def encode(self):
-        
+        print(f'FetchResponsePartition :: {self}')
         partition_buffer = BytesIO()
 
         partition_buffer.write(encode_int32(self.partition_index))
@@ -76,7 +76,7 @@ class FetchResponseTopic:
                 partitions=[
                     FetchResponsePartition(
                         partition_index= 0,
-                        error_code=  ErrorCode.UNKNOWN_TOPIC_ID
+                        error_code=  ErrorCode.UNKNOWN_TOPIC_ID,
                     )
                 ]
             )
@@ -94,6 +94,7 @@ class FetchResponseTopic:
             )
     
     def encode(self):
+        print(f'FetchResponseTopic :: {self}')
         topic_buffer = BytesIO()
 
         topic_buffer.write(encode_uuid(self.topic_id))
@@ -118,12 +119,13 @@ class FetchResponse(AbstractResponse):
             "session_id": 0,
             "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
         }
-        print(f'Fetch Resp Body  :: \n {body_dict} ')
+        
         return body_dict 
     
     def _encode_body(self):
 
         body_buffer = BytesIO()
+        print(f'Fetch Response Body : {self}')
 
         body_buffer.write(encode_int32(self.throttle_time))
         body_buffer.write(self.error_code.encode())
