@@ -122,7 +122,6 @@ class FetchResponse(AbstractResponse):
         return body_dict 
     
     def _encode_body(self):
-
         body_buffer = BytesIO()
         print(f'Fetch Response Body : {self}')
 
