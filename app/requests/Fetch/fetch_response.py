@@ -70,6 +70,7 @@ class FetchResponseTopic:
         cluster_metadata = ClusterMetadata()
         topic_name = cluster_metadata.get_topic_name(request_topic.topic_id)
         if topic_name is None:
+            print('No topic found')
             return FetchResponseTopic(
                 topic_id= request_topic.topic_id,
                 partitions=[
@@ -115,7 +116,7 @@ class FetchResponse(AbstractResponse):
             "throttle_time": 0,
             "error_code": ErrorCode.NO_ERROR,
             "session_id": 0,
-            "responses": []
+            "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
         }
         print(f'Fetch Resp Body  :: \n {body_dict} ')
         return body_dict 
