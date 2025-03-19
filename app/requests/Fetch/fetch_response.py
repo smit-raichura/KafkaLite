@@ -54,7 +54,7 @@ class FetchResponsePartition:
         partition_buffer.write(encode_compact_array(self.aborted_transactions))
         partition_buffer.write(encode_int64(self.preferred_read_replica))
         partition_buffer.write(encode_compact_array(self.records))
-        partition_buffer.write(encode_tagged_fields())
+        # partition_buffer.write(encode_tagged_fields())
 
         return partition_buffer.getvalue()
 
