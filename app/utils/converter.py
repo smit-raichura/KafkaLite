@@ -64,7 +64,6 @@ def decode_unsigned_varint(binary_stream: BinaryIO):
             return n
         shamt += 7
 
-
 def decode_varint(binary_stream: BinaryIO):
     n = decode_unsigned_varint(binary_stream)
     return -((n + 1) >> 1) if (n & 1) else (n >> 1)
