@@ -115,7 +115,7 @@ class FetchResponse(AbstractResponse):
             "throttle_time": 0,
             "error_code": ErrorCode.NO_ERROR,
             "session_id": 0,
-            "responses": [FetchResponseTopic.from_topic(topic) for topic in request.topics]
+            "responses": []
         }
         print(f'Fetch Resp Body  :: \n {body_dict} ')
         return body_dict 
