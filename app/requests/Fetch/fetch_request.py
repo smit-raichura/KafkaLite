@@ -28,7 +28,7 @@ class FetchRequestPartition:
         request_part_dict = {
             "partition": decode_int32(buffer),
             "current_leader_epoch": decode_int32(buffer),
-            "fetch_offset": decode_int32(buffer),
+            "fetch_offset": decode_int64(buffer),
             "last_fetched_epoch": decode_int32(buffer),
             "log_start_offset": decode_int64(buffer),
             "partition_max_bytes": decode_int32(buffer),
