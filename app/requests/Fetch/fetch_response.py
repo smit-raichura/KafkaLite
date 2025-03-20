@@ -104,6 +104,7 @@ class FetchResponseTopic:
 
         return topic_buffer.getvalue()
 
+
 @dataclass
 class FetchResponse(AbstractResponse):
 
