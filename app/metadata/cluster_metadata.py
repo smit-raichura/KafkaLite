@@ -84,7 +84,7 @@ def read_record_batches(topic_name: str, partition_index: int):
     with open(filepath, mode = 'rb') as file_buffer:
         while file_buffer.peek():
             rec_batch = RecordBatch.decode(file_buffer)
-            # print(f'--------------Record Batch ---------------')
-            # print(f'topic_name : {topic_name} partition_index : {partition_index}')
-            # print(f'record: {rec_batch}')
+            print(f'--------------Record Batch ---------------')
+            print(f'topic_name : {topic_name} partition_index : {partition_index}')
+            print(f'record: {rec_batch}')
             yield rec_batch
