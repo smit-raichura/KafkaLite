@@ -95,5 +95,5 @@ class FetchRequest(AbstractRequest):
             "rack_id": decode_compact_string(request_buffer)
         }
         decode_tagged_fields(request_buffer)
-        # print(f' FEtch Request Body  ::  {request_body}')
+        print(f' FEtch Request Body  ::  {request_body}')
         return request_body

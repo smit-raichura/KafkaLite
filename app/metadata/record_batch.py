@@ -52,7 +52,7 @@ class RecordBatch:
             'base_sequence': decode_int32(buffer),
             'records': decode_array(buffer, Record.decode)
         }
-
+    
         return RecordBatch(**batch_dict)
 
     def encode(self):

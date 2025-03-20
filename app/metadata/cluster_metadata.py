@@ -83,4 +83,8 @@ def read_record_batches(topic_name: str, partition_index: int):
     filepath = f'/tmp/kraft-combined-logs/{topic_name}-{partition_index}/00000000000000000000.log'
     with open(filepath, mode = 'rb') as file_buffer:
         while file_buffer.peek():
-            yield RecordBatch.decode(file_buffer)
+            rec_batch = RecordBatch.decode(file_buffer)
+            print(f'--------------Record Batch ---------------')
+            print(f'topic_name : {topic_name} partition_index : {partition_index}')
+            print(f'record: {rec_batch}')
+            yield rec_batch
