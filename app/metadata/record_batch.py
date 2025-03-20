@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import BinaryIO
 from io import BytesIO
+from zlib import crc32
 
 from ..utils.converter import (
     decode_array,
@@ -54,6 +55,9 @@ class RecordBatch:
         }
     
         return RecordBatch(**batch_dict)
+    
+    def calculate_crc(data: bytes):
+        return crc32(data) & 0xFFFFFFF
 
     def encode(self):
         batch_buffer = BytesIO()
@@ -62,7 +66,10 @@ class RecordBatch:
         batch_buffer.write(encode_int32(self.batch_length))
         batch_buffer.write(encode_int32(self.partition_leader_epoch))
         batch_buffer.write(encode_int8(self.magic_byte))
-        batch_buffer.write(encode_uint32(self.crc))
+
+        crc_placeholder_position = batch_buffer.tell()
+        batch_buffer.write(encode_uint32(0)) #crc placeholder
+
         batch_buffer.write(encode_int16(self.attributes))
         batch_buffer.write(encode_int32(self.last_offset_data))
         batch_buffer.write(encode_int64(self.base_timestamp))
@@ -71,5 +78,15 @@ class RecordBatch:
         batch_buffer.write(encode_int16(self.producer_epoch))
         batch_buffer.write(encode_int32(self.base_sequence))
         batch_buffer.write(encode_array(self.records))
+
+        # Calculate CRC32 for data after magic_byte up to end of buffer
+        buffer_data = batch_buffer.getvalue()
+        crc_data = buffer_data[crc_placeholder_position + 4:]  # Skip placeholder
+        crc_value = self.calculate_crc(crc_data)
+
+        # Write actual CRC value in place of placeholder
+        batch_buffer.seek(crc_placeholder_position)
+        batch_buffer.write(encode_uint32(crc_value))
+
 
         return batch_buffer.getvalue()
