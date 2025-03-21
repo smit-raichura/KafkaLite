@@ -56,7 +56,7 @@ class RecordBatch:
     
         return RecordBatch(**batch_dict)
     
-    def calculate_crc(data: bytes):
+    def calculate_crc(self, data: bytes):
         return crc32(data) & 0xFFFFFFF
 
     def encode(self):
