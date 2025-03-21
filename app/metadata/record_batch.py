@@ -86,8 +86,6 @@ class RecordBatch:
         batch_length = len(buffer) - 12  # Exclude baseOffset (8 bytes) and batchLength (4 bytes)
         encode_uint32_at(buffer, 8, batch_length)
 
-        
-        
         # Calculate CRC
         crc_data = buffer[crc_start_offset + 4:]  # Skip the CRC placeholder
         crc_value = calculate_crc(crc_data)
