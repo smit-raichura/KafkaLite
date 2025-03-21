@@ -158,7 +158,7 @@ def encode_bytes(data: bytes):
 
 
 def decode_compact_bytes(binary_stream: BinaryIO):
-    n = decode_unsigned_varint(binary_stream) - 1
+    n = decode_unsigned_varint(binary_stream) 
     return binary_stream.read(n)
 
 
