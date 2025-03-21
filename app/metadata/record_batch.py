@@ -17,7 +17,8 @@ from ..utils.converter import (
     encode_int64,
     encode_uint32,
     calculate_crc,
-    encode_uint32_at
+    encode_uint32_at,
+    encode_tagged_fields
 )
 
 from .record import Record
@@ -94,6 +95,7 @@ class RecordBatch:
 
         # Write CRC back to buffer
         encode_uint32_at(buffer, crc_start_offset, crc_value)
-        
+        batch_buffer.write(encode_tagged_fields())
+
         
         return batch_buffer.getvalue()
