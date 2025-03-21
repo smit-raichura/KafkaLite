@@ -80,7 +80,7 @@ class RecordBatch:
         # Calculate CRC32 for data after magic_byte up to end of buffer
         buffer_data = batch_buffer.getvalue()
         crc_data = buffer_data[crc_placeholder_position + 4:]  # Skip placeholder
-        crc_value = self.calculate_crc(crc_data)
+        crc_value = calculate_crc(crc_data)
 
         # Write actual CRC value in place of placeholder
         batch_buffer.seek(crc_placeholder_position)
