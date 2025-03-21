@@ -90,7 +90,6 @@ class RecordBatch:
         crc_data = buffer[crc_start_offset + 4:]  # Skip the CRC placeholder
         crc_value = calculate_crc(crc_data)
         
-
         # Write CRC back to buffer
         encode_uint32_at(buffer, crc_start_offset, crc_value)
         # batch_buffer.write(encode_tagged_fields())
