@@ -62,7 +62,7 @@ class RecordBatch:
         batch_buffer = BytesIO()
 
         batch_buffer.write(encode_int64(self.base_offset))
-        batch_buffer.write(encode_int32(self.batch_length))
+        batch_buffer.write(encode_int32(0))
         batch_buffer.write(encode_int32(self.partition_leader_epoch))
         batch_buffer.write(encode_int8(self.magic_byte))
 
@@ -91,7 +91,7 @@ class RecordBatch:
         crc_data = buffer[crc_start_offset + 4:]  # Skip the CRC placeholder
         crc_value = calculate_crc(crc_data)
         
-        
+
         # Write CRC back to buffer
         encode_uint32_at(buffer, crc_start_offset, crc_value)
         
