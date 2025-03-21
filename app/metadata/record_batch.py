@@ -78,12 +78,14 @@ class RecordBatch:
         batch_buffer.write(encode_int32(self.base_sequence))
         batch_buffer.write(encode_array(self.records))
 
+        # Get the complete buffer
+        buffer = batch_buffer.getvalue()
+        
         # Calculate and write batch length
         batch_length = len(buffer) - 12  # Exclude baseOffset (8 bytes) and batchLength (4 bytes)
         encode_uint32_at(buffer, 8, batch_length)
 
-        # Get the complete buffer
-        buffer = batch_buffer.getvalue()
+        
         
         # Calculate CRC
         crc_data = buffer[crc_start_offset + 4:]  # Skip the CRC placeholder
