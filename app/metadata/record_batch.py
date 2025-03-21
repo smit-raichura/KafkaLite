@@ -3,6 +3,7 @@ from typing import BinaryIO
 from io import BytesIO
 from zlib import crc32
 
+
 from ..utils.converter import (
     decode_array,
     decode_int8,
@@ -15,7 +16,9 @@ from ..utils.converter import (
     encode_int16,
     encode_int32,
     encode_int64,
-    encode_uint32
+    encode_uint32,
+    calculate_crc32c,
+    encode_uint32_at
 )
 
 from .record import Record
@@ -81,12 +84,14 @@ class RecordBatch:
 
         # Calculate CRC32 for data after magic_byte up to end of buffer
         buffer_data = batch_buffer.getvalue()
-        crc_data = buffer_data[crc_placeholder_position + 4:]  # Skip placeholder
-        crc_value = self.calculate_crc(crc_data)
+        ccrc_placeholder_position = batch_buffer.tell()
+        batch_buffer.write(encode_uint32(0))  # Placeholder
 
-        # Write actual CRC value in place of placeholder
-        batch_buffer.seek(crc_placeholder_position)
-        batch_buffer.write(encode_uint32(crc_value))
+        buffer = bytearray(batch_buffer.getvalue())
+        crc_data = buffer[crc_placeholder_position + 4:]
+        crc_value = calculate_crc32c(crc_data)
 
+        # Write the CRC value
+        encode_uint32_at(buffer, crc_placeholder_position, crc_value)
 
-        return batch_buffer.getvalue()
+        return bytes(buffer)
