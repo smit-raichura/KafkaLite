@@ -49,8 +49,8 @@ class Record:
 
         record_buffer.write(encode_varint(self.length))
         record_buffer.write(encode_int8(self.attributes))
-        record_buffer.write(encode_varlong(self.timestamp_delta))
-        record_buffer.write(encode_compact_bytes(self.key))
+        record_buffer.write(encode_varlong(0))
+        record_buffer.write(encode_compact_bytes(b'\x01'))
         record_buffer.write(encode_varint(self.value_length))
         record_buffer.write(self.value)
         record_buffer.write(encode_compact_array(self.headers))
