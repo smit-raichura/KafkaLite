@@ -224,34 +224,16 @@ def decode_tagged_fields(binary_stream: BinaryIO):
 def encode_tagged_fields():
     return b"\x00"
 
-def generate_crc32c_table():
-    polynomial = 0x82F63B78
-    table = []
-    for i in range(256):
-        crc = i
-        for _ in range(8):
-            if crc & 1:
-                crc = (crc >> 1) ^ polynomial
-            else:
-                crc >>= 1
-        table.append(crc)
-    return table
-
-def calculate_crc32c(data: bytes) -> int:
+def calculate_crc(data):
+    POLY = 0x82F63B78
     crc = 0xFFFFFFFF
     for byte in data:
-        crc = (crc >> 8) ^ CRC32C_TABLE[(crc ^ byte) & 0xFF]
-    return crc ^ 0xFFFFFFFF
-
-CRC32C_TABLE = generate_crc32c_table()
-
-def encode_uint32_at(buffer: bytearray, offset: int, value: int):
-    # Validate range for unsigned 32-bit integer
-    if value < 0 or value > 0xFFFFFFFF:
-        raise ValueError(f"Value out of range for unsigned 32-bit integer: {value}")
-
-    # Write the value as 4 bytes using bitwise operations
-    buffer[offset] = (value >> 24) & 0xFF
-    buffer[offset + 1] = (value >> 16) & 0xFF
-    buffer[offset + 2] = (value >> 8) & 0xFF
-    buffer[offset + 3] = value & 0xFF
+        crc ^= byte
+        for _ in range(8):
+            if crc & 1:
+                crc = (crc >> 1) ^ POLY
+            else:
+                crc = crc >> 1
+    crc = crc ^ 0xFFFFFFFF
+    
+    return crc
