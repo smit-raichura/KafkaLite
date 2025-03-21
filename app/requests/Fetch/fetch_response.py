@@ -125,8 +125,8 @@ class FetchResponse(AbstractResponse):
     
     def _encode_body(self):
         body_buffer = BytesIO()
-        print(f'Cluster Metadata : {ClusterMetadata()}')
-        print(f'Fetch Response Body : {self}')
+        # print(f'Cluster Metadata : {ClusterMetadata()}')
+        # print(f'Fetch Response Body : {self}')
 
         body_buffer.write(encode_int32(self.throttle_time))
         body_buffer.write(self.error_code.encode())
