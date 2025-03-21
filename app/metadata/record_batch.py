@@ -16,7 +16,8 @@ from ..utils.converter import (
     encode_int32,
     encode_int64,
     encode_uint32,
-    calculate_crc
+    calculate_crc,
+    encode_uint32_at
 )
 
 from .record import Record
@@ -65,8 +66,8 @@ class RecordBatch:
         batch_buffer.write(encode_int32(self.partition_leader_epoch))
         batch_buffer.write(encode_int8(self.magic_byte))
 
-        crc_placeholder_position = batch_buffer.tell()
-        batch_buffer.write(encode_uint32(0)) #crc placeholder
+        crc_start_offset = batch_buffer.tell()
+        batch_buffer.write(encode_int32(0))  # CRC placeholder
 
         batch_buffer.write(encode_int16(self.attributes))
         batch_buffer.write(encode_int32(self.last_offset_data))
@@ -77,13 +78,18 @@ class RecordBatch:
         batch_buffer.write(encode_int32(self.base_sequence))
         batch_buffer.write(encode_array(self.records))
 
-        # Calculate CRC32 for data after magic_byte up to end of buffer
-        buffer_data = batch_buffer.getvalue()
-        crc_data = buffer_data[crc_placeholder_position + 4:]  # Skip placeholder
+        # Get the complete buffer
+        buffer = batch_buffer.getvalue()
+        
+        # Calculate CRC
+        crc_data = buffer[crc_start_offset + 4:]  # Skip the CRC placeholder
         crc_value = calculate_crc(crc_data)
-
-        # Write actual CRC value in place of placeholder
-        batch_buffer.seek(crc_placeholder_position)
-        batch_buffer.write(encode_uint32(crc_value))
+        
+        # Write CRC back to buffer
+        encode_uint32_at(buffer, crc_start_offset, crc_value)
+        
+        # Calculate and write batch length
+        batch_length = len(buffer) - 12  # Exclude baseOffset (8 bytes) and batchLength (4 bytes)
+        encode_uint32_at(buffer, 8, batch_length)
 
         return batch_buffer.getvalue()

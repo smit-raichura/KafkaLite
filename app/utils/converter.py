@@ -237,3 +237,17 @@ def calculate_crc(data):
     crc = crc ^ 0xFFFFFFFF
     
     return crc
+
+def encode_uint32_at(buffer, offset, value):
+    # Validate range for unsigned 32-bit integer
+    if value < 0 or value > 0xFFFFFFFF:
+        raise ValueError(f"Value out of range for unsigned 32-bit integer: {value}")
+
+    buffer_array = bytearray(buffer)
+
+    buffer_array[offset] = (value >> 24) & 0xFF
+    buffer_array[offset + 1] = (value >> 16) & 0xFF
+    buffer_array[offset + 2] = (value >> 8) & 0xFF
+    buffer_array[offset + 3] = value & 0xFF
+    
+    return bytes(buffer_array)
