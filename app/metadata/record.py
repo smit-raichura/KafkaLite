@@ -40,7 +40,7 @@ class Record:
         }
         record_dict["value"] = buffer.read(record_dict["value_length"])
         record_dict["headers"] = decode_compact_array(buffer, RecordHeader.decode)
-        print(f"{cls}")
+        print(f"RECORD - metadata : {cls}")
         return Record(**record_dict)
 
     def encode(self):
